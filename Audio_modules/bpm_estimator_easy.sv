@@ -1,6 +1,6 @@
 //bpm snr version estimator
 
-//NOT tested yet as has not been integrated into SNR. Just a draft
+//NOT tested yet as has not been integrated into SNR. Just a draft - compiles in Quartus. 
 
 //basic assumptions
 //40-200BPM with +-10% error
@@ -13,15 +13,14 @@ At 48Khz --> sample = 1/48000 = 28.83 micro second
 At 8 Khz --> sample = 1/8000 = 125 micro seconds (0.04% error for 300ms, 0.008% error 1500ms) - so is within 10% error easily
 */
 
-module bpm_estimator_snr #(
+module bpm_estimator #(
     parameter W = 16, //sample width of signal_rms
-    parameter ENVELOPE_WIDTH = 24, //envelope signal width
-  parameter SAMPLE_FREQ = 8000, //apparently a suitable number if SNR is decimating from 48Khz. At 8kHz, time resolution is 125mico-sec, at 16kHz it is 62.5ms (better measurement) - have to just match it 
-  //to postdecimation rate
-  parameter signed [W-1:0] THRESHOLD = 16'sd500, //Need to tune - is 500 in decimal
+    parameter SAMPLE_FREQ = 8000, //apparently a suitable number if SNR is decimating from 48Khz. At 8kHz, time resolution is 125mico-sec, at 16kHz it is 62.5ms (better measurement) - have to just match it 
+    //to postdecimation rate
+    parameter signed [W-1:0] THRESHOLD = 16'sd500, //Need to tune signal amplitude units - is 500 in decimal
     parameter REFRAC_TIMER = 200, //ms - so we don't double count = 5 beats per second = 300bpm upper limit
     parameter WORD_LENGTH = 32, //bits for word for fixed-point rep
-    parameter FRAC_LENGTH = 16, //bits for frac length in fixed-point rep
+    parameter FRAC_LENGTH = 16 //bits for frac length in fixed-point rep
 )(
     input logic clk,
     input logic reset,
@@ -31,7 +30,7 @@ module bpm_estimator_snr #(
     output logic beat_pulse, //single cycle pulse for beat detected
     output logic [W-1:0] beat_strength, //integer for beat amp
     output logic [15:0] BPM_estimate //integer of current BPM estimate
-)
+);
 
     //detect signal_rms peak above a threshold and record them as onset/beat events
     
@@ -112,9 +111,5 @@ module bpm_estimator_snr #(
         end
 
     end
-
-endmodule
-
-
 
 endmodule
