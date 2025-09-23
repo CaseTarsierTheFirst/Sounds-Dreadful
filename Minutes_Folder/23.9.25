@@ -1,0 +1,29 @@
+# Meeting 3 Minutes
+
+**Date** 23.9.25
+
+**Location** In Person
+
+**Minutes Writer** Penelope
+
+
+## Attendees
+- Penelope
+- Jeremy
+- Peter
+
+  ## Key Points Discussed
+  - Made sure we were all on the same page with how the audio modules are going to work together for both the easy and hard versions
+  - Plan to try and integrate the easy version audio by the end of this week, whilst working on hard version modules
+
+  ## Steps Until Next Meeting
+  - Peter complete SNR, audio frontend to decimate input stream
+  - Penelope to start drafting and testing hard-version BPM modules
+  - Jeremy needs a board to test his VGA stuff
+ 
+  ## Next Meeting
+  **Date:** 25.9.25
+  
+  **Location:** Lab
+  
+  **Time:** 3pm-6pm
