@@ -1,0 +1,42 @@
+// sevenseg_display.sv
+// Show an 8-bit integer (0–99) as "XXdB" on 7-seg displays
+
+module sevenseg_display #(
+  parameter bit ACTIVE_LOW = 1   // 1 for DE2-115 style, 0 for active-high
+)(
+  input  logic [7:0] value,      // 0–99 dB
+  output logic [6:0] HEX0, HEX1, HEX2, HEX3, HEX4, HEX5
+);
+
+  // LUT for 0–9
+  localparam [6:0] DIG_LUT [0:9] = '{
+    7'b1000000, // 0
+    7'b1111001, // 1
+    7'b0100100, // 2
+    7'b0110000, // 3
+    7'b0011001, // 4
+    7'b0010010, // 5
+    7'b0000010, // 6
+    7'b1111000, // 7
+    7'b0000000, // 8
+    7'b0010000  // 9
+  };
+  localparam [6:0] SEG_D = 7'b1000010; // 'd'
+  localparam [6:0] SEG_B = 7'b0000011; // 'b'
+  localparam [6:0] SEG_BLANK = 7'b1111111;
+
+  function automatic [6:0] seg_out(input [6:0] raw);
+    seg_out = (ACTIVE_LOW) ? raw : ~raw;
+  endfunction
+
+  wire [3:0] tens = (value / 10) % 10;
+  wire [3:0] ones = value % 10;
+
+  assign HEX0 = seg_out(DIG_LUT[ones]);
+  assign HEX1 = seg_out(DIG_LUT[tens]);
+  assign HEX2 = seg_out(SEG_D);
+  assign HEX3 = seg_out(SEG_B);
+  assign HEX4 = seg_out(SEG_BLANK);
+  assign HEX5 = seg_out(SEG_BLANK);
+
+endmodule
