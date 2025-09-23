@@ -15,7 +15,8 @@ At 8 Khz --> sample = 1/8000 = 125 micro seconds (0.04% error for 300ms, 0.008% 
 
 module bpm_estimator #(
     parameter W = 16, //sample width of signal_rms
-    parameter SAMPLE_FREQ = 8000, //apparently a suitable number if SNR is decimating from 48Khz. At 8kHz, time resolution is 125mico-sec, at 16kHz it is 62.5ms (better measurement) - have to just match it 
+    //changed from 8000 to 48000 based on Peter's input - may need to change again
+    parameter SAMPLE_FREQ = 48000, //apparently a suitable number if SNR is decimating from 48Khz. At 8kHz, time resolution is 125mico-sec, at 16kHz it is 62.5ms (better measurement) - have to just match it 
     //to postdecimation rate
     parameter signed [W-1:0] THRESHOLD = 16'sd500, //Need to tune signal amplitude units - is 500 in decimal
     parameter REFRAC_TIMER = 200, //ms - so we don't double count = 5 beats per second = 300bpm upper limit
