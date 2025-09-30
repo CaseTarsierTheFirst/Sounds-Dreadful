@@ -21,7 +21,7 @@ module bpm_estimator #(
     parameter THRESHOLD_SCALE = 2,
     //to postdecimation rate
     //parameter signed [W-1:0] THRESHOLD = 16'sd500, //Need to tune signal amplitude units - is 500 in decimal
-    parameter REFRAC_TIMER = 200, //ms - so we don't double count = 5 beats per second = 300bpm upper limit
+    parameter REFRAC_TIMER = 200 //ms - so we don't double count = 5 beats per second = 300bpm upper limit
 )(
     input logic clk,
     input logic reset,
@@ -47,12 +47,6 @@ module bpm_estimator #(
 
     logic [31:0] interval_counter; //counter for time between bteas
     logic [31:0] last_interval_counter_val; //stores last time between intervals from BPM calc
-    
-    //if we need bpm estimate output in fixed-point notation
-    logic [WORD_LENGTH-1:0] bpm_fixed;
-    logic [FRAC_LENGTH-1:0] bpm_int;
-    logic [FRAC_LENGTH-1:0] bpm_frac;
-    logic [WORD_LENGTH-1:0] numerator = 60 * SAMPLE_FREQ << 16;
 
     //logic for detecting beat above threshold
     always_ff @(posedge clk) begin
