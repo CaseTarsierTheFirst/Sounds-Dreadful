@@ -87,11 +87,13 @@ module top_level #(
   // New SNR outputs
 		logic [7:0]  snr_db;
 		logic [15:0] sig_rms, noise_rms;
-		logic        snr_valid, snr_ready;
+		logic        snr_valid;//, snr_ready;
 
 	snr_calculator #(
 		.DATA_WIDTH(N),
-		.SNR_WIDTH(8)
+		.SNR_WIDTH(8),
+		.SIG_SHIFT(6),         // fast MA
+		.NOISE_SHIFT(12)       // slow MA (only while quiet_period=1)
 		) u_snr (
 		.clk             (AUD_BCLK),
 		.reset           (~rst_n),          // new module expects active-high reset
@@ -105,6 +107,27 @@ module top_level #(
 		.output_valid    (snr_valid),
 		.output_ready    (1'b1)             // always consume results
 		);
+		
+	//=================================================	
+	logic        beat_pulse;
+	logic [15:0] beat_strength;
+	logic [15:0] bpm_estimate;
+	
+	bpm_estimator #(
+  .W(16),
+  .SAMPLE_FREQ(12000),          // decimated rate (48k / 4); change if R changes
+  //.THRESHOLD(16'sd1),         // tune on hardware
+  .REFRAC_TIMER(200)            // ms refractory (avoid double-count)
+) u_bpm (
+  .clk           (AUD_BCLK),
+  .reset         (~rst_n),      // active-high reset
+  .signal_rms    (sig_rms),
+  .sample_tick   (snr_valid),   // one tick per decimated SNR/RMS sample
+  .beat_pulse    (beat_pulse),
+  .beat_strength (beat_strength),
+  .BPM_estimate  (bpm_estimate)
+);
+
 
 
   // ======================== LED debug (decimated stream) =================
@@ -118,9 +141,9 @@ module top_level #(
   end
 
   // ======================== Seven-segment display ========================
-  // Active-low HEX on DE2-115; this shows two digits of snr_db
-  logic [7:0] snr_db_latched;
-logic [10:0] disp_cnt;  // enough bits for ~2000 counts
+  // latch SNR every ~100 ms for display
+logic [7:0] snr_db_latched;
+logic [10:0] disp_cnt;
 
 always_ff @(posedge AUD_BCLK) begin
   if (!rst_n) begin
@@ -136,10 +159,16 @@ always_ff @(posedge AUD_BCLK) begin
   end
 end
 
-  sevenseg_display8 #(.ACTIVE_LOW(1), .BLANK_LEADING_ZEROS(1)) u_hex8 (
-    .value ({8'd0, snr_db_latched}), // 0000..00XX
-    .HEX0(HEX0), .HEX1(HEX1), .HEX2(HEX2), .HEX3(HEX3),
-    .HEX4(HEX4), .HEX5(HEX5), .HEX6(HEX6), .HEX7(HEX7)
-  );
+// NEW: combined SNR + BPM display
+sevenseg_snr_bpm #(
+  .ACTIVE_LOW(1),
+  .BLANK_LEADING_ZEROS(1)
+) u_hex8 (
+  .snr_val (snr_db_latched),  // 0..99 SNR
+  .bpm_val (bpm_estimate),    // 0..9999 BPM
+  .HEX0(HEX0), .HEX1(HEX1), .HEX2(HEX2), .HEX3(HEX3),
+  .HEX4(HEX4), .HEX5(HEX5), .HEX6(HEX6), .HEX7(HEX7)
+);
+
 
 endmodule
