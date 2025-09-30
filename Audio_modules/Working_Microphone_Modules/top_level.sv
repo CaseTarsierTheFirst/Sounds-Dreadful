@@ -28,6 +28,15 @@ module top_level #(
 	logic rst_n;
 	assign rst_n = KEY[3];  // DE2 buttons are active-low; 1 = not pressed
 	
+	// Mic (48 kHz) -> Decimator (12 kHz) -> SNR
+	localparam int N = 16;
+
+	logic              mic_valid;
+	logic signed [N-1:0] mic_sample;
+
+	logic              decim_valid;
+	logic signed [N-1:0] decim_sample;
+	
 	logic [15:0] DE_LEDR; // Accounts for the different number of LEDs on the DE1-Soc vs. DE2-115.
 
 	logic adc_clk; adc_pll adc_pll_u (.areset(1'b0),.inclk0(CLOCK_50),.c0(adc_clk)); // generate 18.432 MHz clock
@@ -55,6 +64,7 @@ module top_level #(
       .adclrc(AUD_ADCLRCK),
       .bclk(AUD_BCLK),
       .adcdat(AUD_ADCDAT),
+		.valid(mic_valid),
       .sample_data(data)
 	);
 	
@@ -77,11 +87,30 @@ module top_level #(
 	snr_calc #(.N(16), .EMA_SHIFT(10)) u_snr (
 		.clk         (AUD_BCLK),
 		.rst_n       (rst_n),        // <-- NEW
-		.valid       (samp_valid),
-		.sample_data (data),
+		.valid       (decim_valid),
+		.sample_data (decim_sample),
 		.KEY0        (KEY[0]),
 		.snr_db      (snr_db)
 	);
+	
+	
+	// ======================== Decimator =========================================
+		
+		decimate #(.W(N), .DECIMATE_FACTOR(4)) u_decim (
+			.clk     (AUD_BCLK),
+
+			.x_valid (mic_valid),
+			.x_ready (decim_x_ready),
+			.x_data  (mic_sample),
+
+			.y_valid (decim_valid),
+			.y_ready (1'b1),        // always ready to accept decimated samples
+			.y_data  (decim_sample)
+		);
+	
+	
+	
+	
 
 
 	// Seven-segment display (requires sevenseg_display.sv)
@@ -93,7 +122,10 @@ module top_level #(
 		.HEX4(HEX4), .HEX5(HEX5), .HEX6(HEX6), .HEX7(HEX7)
 	);
 
-	// ==========================================================================
+	// =============================================================================
+	
+	
+	
 	
 
 endmodule
