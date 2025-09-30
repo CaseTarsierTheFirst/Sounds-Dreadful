@@ -16,12 +16,12 @@ At 8 Khz --> sample = 1/8000 = 125 micro seconds (0.04% error for 300ms, 0.008% 
 module bpm_estimator #(
     parameter W = 16, //sample width of signal_rms
     //changed from 8000 to 48000 based on Peter's input - may need to change again
-    parameter SAMPLE_FREQ = 48000, //apparently a suitable number if SNR is decimating from 48Khz. At 8kHz, time resolution is 125mico-sec, at 16kHz it is 62.5ms (better measurement) - have to just match it 
+    parameter SAMPLE_FREQ = 12000, //apparently a suitable number if SNR is decimating from 48Khz. At 8kHz, time resolution is 125mico-sec, at 16kHz it is 62.5ms (better measurement) - have to just match it 
+    parameter WINDOW_MS = 20,
+    parameter THRESHOLD_SCALE = 2,
     //to postdecimation rate
-    parameter signed [W-1:0] THRESHOLD = 16'sd500, //Need to tune signal amplitude units - is 500 in decimal
+    //parameter signed [W-1:0] THRESHOLD = 16'sd500, //Need to tune signal amplitude units - is 500 in decimal
     parameter REFRAC_TIMER = 200, //ms - so we don't double count = 5 beats per second = 300bpm upper limit
-    parameter WORD_LENGTH = 32, //bits for word for fixed-point rep
-    parameter FRAC_LENGTH = 16 //bits for frac length in fixed-point rep
 )(
     input logic clk,
     input logic reset,
@@ -34,6 +34,11 @@ module bpm_estimator #(
 );
 
     //detect signal_rms peak above a threshold and record them as onset/beat events
+
+    localparam integer WINDOW_SIZE = (SAMPLE_FREQ * WINDOW_MS) / 1000;
+    logic [31:0] window_counter;
+    logic [63:0] energy_accum;
+    logic [63:0] avg_energy;
     
     //turn ms into clock cycles for refrac period
     localparam integer REFRAC_CYCLES = (SAMPLE_FREQ * REFRAC_TIMER) / 1000;
@@ -62,55 +67,58 @@ module bpm_estimator #(
             refractory_active <= 0;
             interval_counter <= 0;
             last_interval_counter_val <= 0;
+
+            window_counter <= 0;
+            energy_accum <= 0;
+            avg_energy <= 1; // can't divide by 0
         end
 
-        //defaults
-        beat_pulse <= 0; //no beat
+        else begin
 
-        //counter increment
-      //if we don't want to count samples I can change this to counting how any 50Mhz ticks = 8Khz - but less synchronised
-      if (sample_tick) begin //this ASSUMES peter is giving me 1 sample per sampling freq (8kHz) - so adjust sampleing freq if needed
-           interval_counter <= interval_counter + 1;
-       end
+            //defaults
+            beat_pulse <= 0; //no beat
 
-        //handle if within refractory period
-        if (refractory_active) begin
-            if (refractory_counter > 0) begin
-                refractory_counter <= refractory_counter - 1;
+            //counter increment
+          //if we don't want to count samples I can change this to counting how any 50Mhz ticks = 8Khz - but less synchronised
+         if (sample_tick) begin
+                interval_counter <= interval_counter + 1;
+                window_counter <= window_counter + 1;
+
+                // Accumulate energy = sum of squares
+                energy_accum <= energy_accum + (signal_rms * signal_rms);
+
+                if (window_counter == WINDOW_SIZE-1) begin
+                    // Window complete: compare to avg
+                    if (!refractory_active && (energy_accum > THRESHOLD_SCALE * avg_energy)) begin
+                        beat_pulse <= 1;
+                        beat_strength <= energy_accum[W-1:0];
+
+                        // BPM calc
+                        if (interval_counter != 0) begin
+                            BPM_estimate <= (60 * SAMPLE_FREQ) / interval_counter;
+                            last_interval_counter_val <= interval_counter;
+                        end
+                        interval_counter <= 0;
+
+                        refractory_counter <= REFRAC_CYCLES;
+                        refractory_active <= 1;
+                    end
+
+                    // Update moving average (simple low-pass)
+                    avg_energy <= (avg_energy*15 + energy_accum) >> 4;
+
+                    // Reset window
+                    energy_accum <= 0;
+                    window_counter <= 0;
+                end
             end
-            else begin
-                refractory_active <= 0;
+
+            // Refractory timer
+            if (refractory_active) begin
+                if (refractory_counter > 0) refractory_counter <= refractory_counter - 1;
+                else refractory_active <= 0;
             end
         end
-
-        //beat detection threshold condition
-        if (!refractory_active && signal_rms > THRESHOLD) begin
-            //outputs
-            beat_pulse <= 1;
-            beat_strength <= signal_rms;
-            bpm_fixed <= numerator / interval_counter; //if we need fixed point rep
-
-            //store last value and reset interval counter
-            last_interval_counter_val <= interval_counter;
-            interval_counter <= 0;
-
-            //reset refractory counter and put into active
-            refractory_counter <= REFRAC_CYCLES;
-            refractory_active <= 1;
-        end
-
-        //calculate BPM from inter-beat interval (time difference between consecutive beats)
-
-        if (last_interval_counter_val != 0) begin
-          //should possibly pipeline this operation
-          //last_interval_counter_val / SAMPLE_FREQ = time between beats in seconds - inverse * 60 = bpm
-            BPM_estimate <= (60 * SAMPLE_FREQ) / last_interval_counter_val;
-            
-            //if needing fixed point output:
-            bpm_int <= bpm_fixed[WORD_LENGTH-1:FRAC_LENGTH]; //integer part
-            bpm_frac <= bpm_fixed[FRAC_LENGTH-1:0]; //fraction part
-        end
-
     end
 
 endmodule
