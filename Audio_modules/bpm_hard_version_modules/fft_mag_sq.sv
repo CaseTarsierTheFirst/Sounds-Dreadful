@@ -5,7 +5,7 @@ we will use for computing spectral flux and distributing frequency bands. This i
 need to do some modification but it seems to look pretty good atm. 
 */
 module fft_mag_sq #(
-    parameter W = 16,
+    parameter W = 16
 )(
     input logic clk,
     input logic reset,
@@ -14,11 +14,11 @@ module fft_mag_sq #(
     input logic signed [W-1:0] fft_imag,
 
     output logic [2*W:0] mag_sq,
-    output logic mag_vald,
+    output logic mag_valid,
     output logic add_stage
 );
 
-    logic signed [2*w-1:0] real_sq, imag_sq;
+    logic signed [2*W-1:0] real_sq, imag_sq;
     logic [2*W:0] mag_pipeline;
 
     //square real and imagined
