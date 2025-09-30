@@ -48,6 +48,14 @@ module bpm_estimator #(
     logic [31:0] interval_counter; //counter for time between bteas
     logic [31:0] last_interval_counter_val; //stores last time between intervals from BPM calc
 
+    //edge detection for sample tick
+    logic sample_tick_d;
+    always_ff @(posedge clk or posedge reset) begin
+        if (reset) sample_tick_d <= 0;
+        else       sample_tick_d <= sample_tick;
+    end
+    wire sample_tick_pulse = sample_tick & ~sample_tick_d;
+
     //logic for detecting beat above threshold
     always_ff @(posedge clk) begin
         if(reset) begin
