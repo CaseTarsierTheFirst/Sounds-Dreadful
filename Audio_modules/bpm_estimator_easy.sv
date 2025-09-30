@@ -1,159 +1,124 @@
-// bpm_estimator_fixed.sv
-module bpm_estimator #(
-    parameter W = 16,                    // sample width of signal_rms (signed or unsigned)
-    parameter integer SAMPLE_FREQ = 12000,
-    parameter integer WINDOW_MS = 10,
-    parameter integer THRESHOLD_SCALE = 2, // multiplicative threshold on energy ratio
-    parameter integer REFRAC_TIMER_MS = 200, // ms
-    parameter integer MAX_BPM_ACCEPT = 300,  // reject intervals shorter than this BPM
-    parameter integer SMOOTH_ALPHA = 8       // smoothing factor for BPM (>=1)
-)(
-    input  logic                     clk,
-    input  logic                     reset,
-    input  logic signed [W-1:0]     signal_rms,    // envelope / RMS (signed OK)
-    input  logic                     sample_tick,   // may be multi-cycle valid -> we edge detect
+//bpm snr version estimator
 
-    output logic                     beat_pulse,
-    output logic [W-1:0]             beat_strength,
-    output logic [15:0]              BPM_estimate
+//NOT tested yet as has not been integrated into SNR. Just a draft - compiles in Quartus. 
+
+//basic assumptions
+//40-200BPM with +-10% error
+/*
+40bpm = 1500 beat intervals (ms) = 72,000 samples at 48kHz
+200bpm = 300 beat intervals (ms) = 14,400 samples at 48kHz
+10% error means we have to distinguish +-30ms (0.1 * 30) at 300 ms intervals, +-150ms at 1500ms intervals
+
+At 48Khz --> sample = 1/48000 = 28.83 micro second
+At 8 Khz --> sample = 1/8000 = 125 micro seconds (0.04% error for 300ms, 0.008% error 1500ms) - so is within 10% error easily
+*/
+
+module bpm_estimator #(
+    parameter W = 16, //sample width of signal_rms
+    //changed from 8000 to 48000 based on Peter's input - may need to change again
+    parameter SAMPLE_FREQ = 12000, //apparently a suitable number if SNR is decimating from 48Khz. At 8kHz, time resolution is 125mico-sec, at 16kHz it is 62.5ms (better measurement) - have to just match it 
+    parameter WINDOW_MS = 20,
+    parameter THRESHOLD_SCALE = 2,
+    //to postdecimation rate
+    //parameter signed [W-1:0] THRESHOLD = 16'sd500, //Need to tune signal amplitude units - is 500 in decimal
+    parameter REFRAC_TIMER = 200 //ms - so we don't double count = 5 beats per second = 300bpm upper limit
+)(
+    input logic clk,
+    input logic reset,
+    input logic signed [W-1:0] signal_rms, //signal-to-noise ratio moving average
+    input logic sample_tick, //signal that new signal_rms valus has been received ever 125 micro-seconds from SNR
+
+    output logic beat_pulse, //single cycle pulse for beat detected
+    output logic [W-1:0] beat_strength, //integer for beat amp
+    output logic [15:0] BPM_estimate //integer of current BPM estimate
 );
 
-    // ---------- derived params ----------
+    //detect signal_rms peak above a threshold and record them as onset/beat events
+
     localparam integer WINDOW_SIZE = (SAMPLE_FREQ * WINDOW_MS) / 1000;
-    localparam integer REFRAC_CYCLES = (SAMPLE_FREQ * REFRAC_TIMER_MS) / 1000;
-    // minimum allowed samples between beats (prevents ridiculously high BPM)
-    localparam integer MIN_INTERVAL_SAMPLES = (SAMPLE_FREQ * 60) / MAX_BPM_ACCEPT;
-
-    // ---------- sample_tick edge-detect (sync two-stage) ----------
-    logic tick_sync_0, tick_sync_1;
-    always_ff @(posedge clk or posedge reset) begin
-        if (reset) begin
-            tick_sync_0 <= 1'b0;
-            tick_sync_1 <= 1'b0;
-        end else begin
-            tick_sync_0 <= sample_tick;
-            tick_sync_1 <= tick_sync_0;
-        end
-    end
-    wire sample_tick_pulse = tick_sync_1 & ~tick_sync_0; // one-cycle pulse in clk domain
-
-    // ---------- internal state ----------
     logic [31:0] window_counter;
     logic [63:0] energy_accum;
     logic [63:0] avg_energy;
 
-    logic [31:0] refractory_counter;
-    logic        refractory_active;
+    //turn ms into clock cycles for refrac period
+    localparam integer REFRAC_CYCLES = (SAMPLE_FREQ * REFRAC_TIMER) / 1000;
+    logic [31:0] refractory_counter; //counts down refractory period
+    logic refractory_active; //flag for if within refractory period
 
-    logic [31:0] interval_counter;
-    logic [31:0] last_interval_counter_val;
+    logic [31:0] interval_counter; //counter for time between bteas
+    logic [31:0] last_interval_counter_val; //stores last time between intervals from BPM calc
 
-    // energy ratio Q16 and previous ratio for rising-edge detection
-    logic [31:0] energy_ratio_q16;
-    logic [31:0] prev_energy_ratio_q16;
-
-    // smoothing for BPM in Q16
-    logic [31:0] smoothed_bpm_q16;
-
-    // ---------- initialize ----------
+    //edge detection for sample tick
+    logic sample_tick_d;
     always_ff @(posedge clk or posedge reset) begin
-        if (reset) begin
-            beat_pulse <= 1'b0;
-            beat_strength <= '0;
-            BPM_estimate <= 16'd0;
+        if (reset) sample_tick_d <= 0;
+        else       sample_tick_d <= sample_tick;
+    end
+    wire sample_tick_pulse = sample_tick & ~sample_tick_d;
 
-            window_counter <= 32'd0;
-            energy_accum <= 64'd0;
-            avg_energy <= 64'd1; // avoid divide-by-zero
+    //logic for detecting beat above threshold
+    always_ff @(posedge clk) begin
+        if(reset) begin
+            //reset outputs
+            beat_pulse <= 0;
+            beat_strength <= 0;
+            BPM_estimate <= 0;
 
+            //reset counters
             refractory_counter <= 0;
-            refractory_active <= 1'b0;
-
+            refractory_active <= 0;
             interval_counter <= 0;
             last_interval_counter_val <= 0;
 
-            energy_ratio_q16 <= 32'd0;
-            prev_energy_ratio_q16 <= 32'd0;
+            window_counter <= 0;
+            energy_accum <= 0;
+            avg_energy <= 1; // can't divide by 0
+        end
 
-            smoothed_bpm_q16 <= 32'd0;
-        end else begin
-            beat_pulse <= 1'b0;
+        else begin
 
-            // store previous ratio for rising-edge detection
-            prev_energy_ratio_q16 <= energy_ratio_q16;
+            //defaults
+            beat_pulse <= 0; //no beat
 
-            // only update counters+accumulators on a clean sample pulse
-            if (sample_tick_pulse) begin
-                // increment counters (per sample)
+            //counter increment
+          //if we don't want to count samples I can change this to counting how any 50Mhz ticks = 8Khz - but less synchronised
+         if (sample_tick) begin
                 interval_counter <= interval_counter + 1;
                 window_counter <= window_counter + 1;
 
-                // square: handle signed/unsigned safely by casting to signed 32-bit then abs
-                logic signed [31:0] s;
-                logic [31:0] sq;
-                s = $signed(signal_rms);
-                // absolute value
-                if (s < 0) sq = $unsigned(-s) * $unsigned(-s);
-                else       sq = $unsigned(s)  * $unsigned(s);
-                energy_accum <= energy_accum + {32'd0, sq}; // 64-bit accumulation
+                // Accumulate energy = sum of squares
+                energy_accum <= energy_accum + (signal_rms * signal_rms);
 
-                // when window ends, compute ratio and possibly detect beat
-                if (window_counter >= WINDOW_SIZE - 1) begin
-                    // compute ratio Q16 = (energy_accum << 16) / avg_energy (guard avg_energy != 0)
-                    if (avg_energy == 0) energy_ratio_q16 <= 32'd0;
-                    else begin
-                        // widen and divide
-                        logic [95:0] numer;
-                        numer = {energy_accum, 16'd0}; // energy_accum << 16
-                        energy_ratio_q16 <= numer / avg_energy;
-                    end
-
-                    // rising edge detection and threshold compare
-                    // threshold in Q16 = THRESHOLD_SCALE << 16
-                    if (!refractory_active &&
-                        (energy_ratio_q16 > (THRESHOLD_SCALE << 16)) &&
-                        (prev_energy_ratio_q16 <= (THRESHOLD_SCALE << 16)) &&
-                        (interval_counter >= MIN_INTERVAL_SAMPLES) ) begin
-
-                        // fire beat
-                        beat_pulse <= 1'b1;
+                if (window_counter == WINDOW_SIZE-1) begin
+                    // Window complete: compare to avg
+                    if (!refractory_active && (energy_accum > THRESHOLD_SCALE * avg_energy)) begin
+                        beat_pulse <= 1;
                         beat_strength <= energy_accum[W-1:0];
 
-                        // compute BPM in Q16: (60 * SAMPLE_FREQ << 16) / interval_counter
+                        // BPM calc
                         if (interval_counter != 0) begin
-                            logic [63:0] numer_bpm;
-                            logic [31:0] bpm_q16;
-                            numer_bpm = (60 * SAMPLE_FREQ);
-                            numer_bpm = numer_bpm << 16; // Q16
-                            bpm_q16 = numer_bpm / interval_counter;
-                            // smoothing
-                            if (SMOOTH_ALPHA <= 1) smoothed_bpm_q16 <= bpm_q16;
-                            else smoothed_bpm_q16 <= ((smoothed_bpm_q16 * (SMOOTH_ALPHA - 1)) + bpm_q16) / SMOOTH_ALPHA;
-
-                            BPM_estimate <= smoothed_bpm_q16[31:16];
+                            BPM_estimate <= (60 * SAMPLE_FREQ) / interval_counter;
+                            last_interval_counter_val <= interval_counter;
                         end
-
-                        last_interval_counter_val <= interval_counter;
                         interval_counter <= 0;
 
-                        // enter refractory
                         refractory_counter <= REFRAC_CYCLES;
-                        refractory_active <= 1'b1;
+                        refractory_active <= 1;
                     end
 
-                    // update exponential moving average for energy (simple IIR)
-                    avg_energy <= (avg_energy * 15 + energy_accum) >> 4;
+                    // Update moving average (simple low-pass)
+                    avg_energy <= (avg_energy*15 + energy_accum) >> 4;
 
-                    // reset window accumulators
-                    energy_accum <= 64'd0;
-                    window_counter <= 32'd0;
+                    // Reset window
+                    energy_accum <= 0;
+                    window_counter <= 0;
                 end
-            end // sample_tick_pulse
+            end
 
-            // refractory countdown (sample ticks)
+            // Refractory timer
             if (refractory_active) begin
                 if (refractory_counter > 0) refractory_counter <= refractory_counter - 1;
-                else refractory_active <= 1'b0;
+                else refractory_active <= 0;
             end
         end
     end
