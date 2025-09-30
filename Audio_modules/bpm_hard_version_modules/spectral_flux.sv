@@ -63,9 +63,12 @@ module spectral_flux #(
             accum_mid <= 0;
             accum_high <= 0;
         end
+		  else if (frame_done) begin
+				flux_accum <= 0;
+		  end
         else if (mag_valid) begin
             prev_val <= prev_mag[bin_index];    //get previous value to match with current
-            diff <= mag_sq - prev_value;        //compute the difference for the sample 
+            diff <= mag_sq - prev_val;        //compute the difference for the sample 
             pos_diff <= (diff[W-1] == 1'b0) ? diff : 0; //only record if MSB == 0 (positive)
             flux_accum <= flux_accum + pos_diff; //add to sum
 
@@ -97,7 +100,7 @@ module spectral_flux #(
         else if (frame_done) begin
             flux_value <= flux_accum; //send out accumulated value for last frame
             flux_valid <= 1; //send out valid signal to autocorrelation module
-            flux_accum <= 0; //reset for next frame
+            //flux_accum <= 0; //reset for next frame
 
             //band mapped
             flux_low <= accum_low;
