@@ -1,0 +1,24 @@
+# Meeting 6 Minutes
+
+**Date** 30.9.25
+
+**Location** In Person
+
+**Minutes Writer** Penelope
+
+## Attendees
+- Penelope
+- Peter
+
+  ## Key Points Discussed
+  - Have a fully function easy bpm version working! Within 10% range, though sometimes counts double and half time
+  - Currently only working with static threshold (pass level)
+
+  ## Steps Until Next Meeting
+  - Penelope: Look over spectral flux modules and get them to at least compile (as no board to work on)
+  - Peter: Test out easy bpm on different songs to identify potential pitfalls/issues that we've missed
+ 
+  ## Next Meeting
+  **Date:** 3.10.25
+  **Location:** Uni, PNR
+  **Time:** From 10am
