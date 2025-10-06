@@ -1,0 +1,24 @@
+# Meeting 5 Minutes
+
+**Date** 4.10.25
+
+**Location** In Person, PNR
+
+**Minutes Writer** Penelope
+
+## Attendees
+- Penelope
+- Peter
+
+  ## Key Things Accomplished
+  - Fixed all handshake issues in the data transfer pipeline - data gets to autocorrelation module
+  - Hard version BPM provides a very rough output, but in integers of 11, and not very accurate at all. We suspect issues with floor division, 1024 window size
+
+  ## Steps Until Next Meeting
+  - Ed post about spectral flux issues
+  - Work on getting a moving threshold average for credit
+ 
+  ## Next Meeting
+  **Date:** 6.10.25
+  **Location:** Online
+  **Time:** 3pm
