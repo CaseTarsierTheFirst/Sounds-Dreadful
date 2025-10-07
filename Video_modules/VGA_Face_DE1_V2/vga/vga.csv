@@ -1,12 +1,12 @@
-# system info vga on 2025.10.07.19:26:51
+# system info vga on 2025.10.08.10:51:30
 system_info:
 name,value
 DEVICE,5CSEMA5F31C6
 DEVICE_FAMILY,Cyclone V
-GENERATION_ID,1759825596
+GENERATION_ID,1759881079
 #
 #
-# Files generated for vga on 2025.10.07.19:26:51
+# Files generated for vga on 2025.10.08.10:51:30
 files:
 filepath,kind,attributes,module,is_top
 simulation/vga.v,VERILOG,,vga,true

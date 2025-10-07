@@ -11,7 +11,7 @@ module vga_face (
     input  logic        ready            
 );
 
-    typedef enum logic [1:0] {Wolf=2'd0, P2=2'd1, Troll=2'd2} face_t;
+    typedef enum logic [1:0] {Wolf=2'd0, P2=2'd1, Colour=2'd2} face_t;
 
     localparam VGA_WIDTH  = 640;
     localparam VGA_HEIGHT = 480;
@@ -22,19 +22,19 @@ module vga_face (
 
     // Image ROMs (160x120, 4 bits per channel)
     (* ram_init_file = "wolf.mif" *)   logic [NumColourBits-1:0] wolf_face   [0: SRC_WIDTH*SRC_HEIGHT-1];
-    (* ram_init_file = "troll.mif" *) logic [NumColourBits-1:0] troll_face [0: SRC_WIDTH*SRC_HEIGHT-1];
+    (* ram_init_file = "colour.mif" *) logic [NumColourBits-1:0] colour_face [0: SRC_WIDTH*SRC_HEIGHT-1];
     (* ram_init_file = "p2.mif" *)    logic [NumColourBits-1:0] p2_face    [0: SRC_WIDTH*SRC_HEIGHT-1];
 
     `ifdef VERILATOR
     initial begin
         $readmemh("wolf.hex", wolf_face);
-        $readmemh("troll.hex", troll_face);
+        $readmemh("colour.hex", colour_face);
         $readmemh("p2.hex", p2_face);
     end
     `endif
 
     logic [18:0] pixel_index = 0, pixel_index_next;
-    logic [NumColourBits-1:0] wolf_face_q, troll_face_q, p2_face_q;
+    logic [NumColourBits-1:0] wolf_face_q, colour_face_q, p2_face_q;
     logic read_enable;
 
     assign read_enable = reset | (valid & ready);
@@ -57,7 +57,7 @@ module vga_face (
     always_ff @(posedge clk) begin
         if (read_enable) begin
             wolf_face_q  <= wolf_face[src_pixel_index];
-            troll_face_q <= troll_face[src_pixel_index];
+            colour_face_q <= colour_face[src_pixel_index];
             p2_face_q    <= p2_face[src_pixel_index];
         end
     end
@@ -70,7 +70,7 @@ module vga_face (
     always_comb begin
         case(face_sel)
             Wolf:   current_pixel = wolf_face_q;
-            Troll:  current_pixel = troll_face_q;
+            Colour:  current_pixel = colour_face_q;
             P2:     current_pixel = p2_face_q;
             default: current_pixel = 12'b0;
         endcase
