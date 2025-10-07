@@ -1,12 +1,12 @@
-Fitter Status : Successful - Tue Sep 30 12:06:48 2025
+Fitter Status : Successful - Tue Oct 07 14:38:44 2025
 Quartus Prime Version : 20.1.0 Build 711 06/05/2020 SJ Lite Edition
 Revision Name : VGA
 Top-level Entity Name : top_level
 Family : Cyclone V
 Device : 5CSEMA5F31C6
 Timing Models : Final
-Logic utilization (in ALMs) : 189 / 32,070 ( < 1 % )
-Total registers : 141
+Logic utilization (in ALMs) : 187 / 32,070 ( < 1 % )
+Total registers : 121
 Total pins : 40 / 457 ( 9 % )
 Total virtual pins : 0
 Total block memory bits : 2,764,800 / 4,065,280 ( 68 % )

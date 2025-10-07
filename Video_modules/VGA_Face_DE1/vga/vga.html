@@ -67,7 +67,7 @@ div.greydiv { vertical-align:top ; text-align:center ; background:#eeeeee ; bord
   </table>
   <table class="blueBar">
    <tr>
-    <td class="l">2025.09.30.12:03:11</td>
+    <td class="l">2025.10.07.14:19:27</td>
     <td class="r">Datasheet</td>
    </tr>
   </table>
@@ -195,13 +195,13 @@ div.greydiv { vertical-align:top ; text-align:center ; background:#eeeeee ; bord
       <td></td>
       <td class="from">avalon_streaming_source&#160;&#160;</td>
       <td class="neighbor" rowspan="2">
-       <a href="#module_video_rgb_resampler_0">video_rgb_resampler_0</a>
+       <a href="#module_video_vga_controller_0">video_vga_controller_0</a>
       </td>
      </tr>
      <tr>
       <td></td>
       <td></td>
-      <td class="to">&#160;&#160;avalon_rgb_sink</td>
+      <td class="to">&#160;&#160;avalon_vga_sink</td>
      </tr>
     </table>
    </div>
@@ -439,23 +439,11 @@ div.greydiv { vertical-align:top ; text-align:center ; background:#eeeeee ; bord
    <div class="greydiv">
     <table class="connectionboxes">
      <tr>
-      <td class="neighbor" rowspan="2">
-       <a href="#module_vga_face_0">vga_face_0</a>
-      </td>
-      <td class="from">avalon_streaming_source&#160;&#160;</td>
-      <td class="main" rowspan="9">video_rgb_resampler_0</td>
-     </tr>
-     <tr>
-      <td class="to">&#160;&#160;avalon_rgb_sink</td>
-     </tr>
-     <tr style="height:6px">
-      <td></td>
-     </tr>
-     <tr>
       <td class="neighbor" rowspan="4">
        <a href="#module_video_pll_0">video_pll_0</a>
       </td>
       <td class="from">vga_clk&#160;&#160;</td>
+      <td class="main" rowspan="4">video_rgb_resampler_0</td>
      </tr>
      <tr>
       <td class="to">&#160;&#160;clk</td>
@@ -465,19 +453,6 @@ div.greydiv { vertical-align:top ; text-align:center ; background:#eeeeee ; bord
      </tr>
      <tr>
       <td class="to">&#160;&#160;reset</td>
-     </tr>
-     <tr>
-      <td></td>
-      <td></td>
-      <td class="from">avalon_rgb_source&#160;&#160;</td>
-      <td class="neighbor" rowspan="2">
-       <a href="#module_video_rgb_resampler_1">video_rgb_resampler_1</a>
-      </td>
-     </tr>
-     <tr>
-      <td></td>
-      <td></td>
-      <td class="to">&#160;&#160;avalon_rgb_sink</td>
      </tr>
     </table>
    </div>
@@ -551,23 +526,11 @@ div.greydiv { vertical-align:top ; text-align:center ; background:#eeeeee ; bord
    <div class="greydiv">
     <table class="connectionboxes">
      <tr>
-      <td class="neighbor" rowspan="2">
-       <a href="#module_video_rgb_resampler_0">video_rgb_resampler_0</a>
-      </td>
-      <td class="from">avalon_rgb_source&#160;&#160;</td>
-      <td class="main" rowspan="9">video_rgb_resampler_1</td>
-     </tr>
-     <tr>
-      <td class="to">&#160;&#160;avalon_rgb_sink</td>
-     </tr>
-     <tr style="height:6px">
-      <td></td>
-     </tr>
-     <tr>
       <td class="neighbor" rowspan="4">
        <a href="#module_video_pll_0">video_pll_0</a>
       </td>
       <td class="from">vga_clk&#160;&#160;</td>
+      <td class="main" rowspan="4">video_rgb_resampler_1</td>
      </tr>
      <tr>
       <td class="to">&#160;&#160;clk</td>
@@ -577,19 +540,6 @@ div.greydiv { vertical-align:top ; text-align:center ; background:#eeeeee ; bord
      </tr>
      <tr>
       <td class="to">&#160;&#160;reset</td>
-     </tr>
-     <tr>
-      <td></td>
-      <td></td>
-      <td class="from">avalon_rgb_source&#160;&#160;</td>
-      <td class="neighbor" rowspan="2">
-       <a href="#module_video_vga_controller_0">video_vga_controller_0</a>
-      </td>
-     </tr>
-     <tr>
-      <td></td>
-      <td></td>
-      <td class="to">&#160;&#160;avalon_vga_sink</td>
      </tr>
     </table>
    </div>
@@ -664,9 +614,9 @@ div.greydiv { vertical-align:top ; text-align:center ; background:#eeeeee ; bord
     <table class="connectionboxes">
      <tr>
       <td class="neighbor" rowspan="2">
-       <a href="#module_video_rgb_resampler_1">video_rgb_resampler_1</a>
+       <a href="#module_vga_face_0">vga_face_0</a>
       </td>
-      <td class="from">avalon_rgb_source&#160;&#160;</td>
+      <td class="from">avalon_streaming_source&#160;&#160;</td>
       <td class="main" rowspan="7">video_vga_controller_0</td>
      </tr>
      <tr>

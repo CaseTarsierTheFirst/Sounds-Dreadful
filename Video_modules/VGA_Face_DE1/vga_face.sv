@@ -10,7 +10,7 @@ module vga_face (
     output logic        valid,           // Data valid signal
     input  logic        ready            // Data ready signal from VGA Module
 );
-    typedef enum logic [1:0] {Happy=2'd0, Neutral=2'd1, Angry=2'd2} face_t; // Define an enum type for readability (optional).
+    typedef enum logic [1:0] {Neutral=2'd0, Happy=2'd1, Angry=2'd2} face_t; // Define an enum type for readability (optional).
 
     localparam NumPixels     = 640 * 480; // Total number of pixels on the 640x480 screen
     localparam NumColourBits = 3;         // We are using a 3-bit colour space to fit 3 images within the 3.888 Mbits of BRAM on our FPGA.
@@ -31,15 +31,15 @@ module vga_face (
     logic [18:0] pixel_index = 0, pixel_index_next; // The pixel counter/index. Set pixel_index_next in an always_comb block.
                                                     // Set pixel_index <= pixel_index_next in an always_ff block.
 
-    logic [NumColourBits-1:0] happy_face_q, neutral_face_q, angry_face_q; // Registers for reading from each ROM.
+    logic [NumColourBits-1:0] neutral_face_q, happy_face_q, angry_face_q; // Registers for reading from each ROM.
       
     logic read_enable; // Need to have a read enable signal for the BRAM
     assign read_enable = reset | (valid & ready); // If reset, read the first pixel value. If valid&ready (handshake), read the next pixel value for the next handshake.
 
     always_ff @(posedge clk) begin : bram_read // This block is for correctly inferring BRAM in Quartus - we need read registers!
         if (read_enable) begin
-            happy_face_q   <= happy_face[pixel_index_next];
             neutral_face_q <= neutral_face[pixel_index_next];
+				happy_face_q   <= happy_face[pixel_index_next];
             angry_face_q   <= angry_face[pixel_index_next];
         end
     end
@@ -50,10 +50,10 @@ module vga_face (
 
     always_comb begin
         unique case (face_select)
+				Neutral: current_pixel = neutral_face_q;
             Happy: current_pixel = happy_face_q;
-            Neutral: current_pixel = neutral_face_q;
             Angry: current_pixel = angry_face_q;
-            default: current_pixel = 3'b000;
+            default: current_pixel = 3'b001;
         endcase
     end
 

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <EnsembleReport name="vga" kind="system" version="20.1" fabric="QSYS">
  <!-- Format version 20.1 711 (Future versions may contain additional information.) -->
- <!-- 2025.09.30.12:03:15 -->
+ <!-- 2025.10.07.14:19:30 -->
  <!-- A collection of modules and connections -->
  <parameter name="clockCrossingAdapter">
   <type>com.altera.sopcmodel.ensemble.EClockAdapter</type>
@@ -53,7 +53,7 @@
  </parameter>
  <parameter name="generationId">
   <type>int</type>
-  <value>1759197791</value>
+  <value>1759807167</value>
   <derived>false</derived>
   <enabled>true</enabled>
   <visible>true</visible>
@@ -3633,65 +3633,11 @@ parameters are a RESULT of the module parameters. -->
   </interface>
  </module>
  <connection
-   name="video_rgb_resampler_0.avalon_rgb_source/video_rgb_resampler_1.avalon_rgb_sink"
-   kind="avalon_streaming"
-   version="20.1"
-   start="video_rgb_resampler_0.avalon_rgb_source"
-   end="video_rgb_resampler_1.avalon_rgb_sink">
-  <parameter name="deviceFamily">
-   <type>java.lang.String</type>
-   <value>UNKNOWN</value>
-   <derived>false</derived>
-   <enabled>true</enabled>
-   <visible>true</visible>
-   <valid>true</valid>
-  </parameter>
-  <parameter name="generateLegacySim">
-   <type>boolean</type>
-   <value>false</value>
-   <derived>false</derived>
-   <enabled>true</enabled>
-   <visible>true</visible>
-   <valid>true</valid>
-  </parameter>
-  <startModule>video_rgb_resampler_0</startModule>
-  <startConnectionPoint>avalon_rgb_source</startConnectionPoint>
-  <endModule>video_rgb_resampler_1</endModule>
-  <endConnectionPoint>avalon_rgb_sink</endConnectionPoint>
- </connection>
- <connection
-   name="video_rgb_resampler_1.avalon_rgb_source/video_vga_controller_0.avalon_vga_sink"
-   kind="avalon_streaming"
-   version="20.1"
-   start="video_rgb_resampler_1.avalon_rgb_source"
-   end="video_vga_controller_0.avalon_vga_sink">
-  <parameter name="deviceFamily">
-   <type>java.lang.String</type>
-   <value>UNKNOWN</value>
-   <derived>false</derived>
-   <enabled>true</enabled>
-   <visible>true</visible>
-   <valid>true</valid>
-  </parameter>
-  <parameter name="generateLegacySim">
-   <type>boolean</type>
-   <value>false</value>
-   <derived>false</derived>
-   <enabled>true</enabled>
-   <visible>true</visible>
-   <valid>true</valid>
-  </parameter>
-  <startModule>video_rgb_resampler_1</startModule>
-  <startConnectionPoint>avalon_rgb_source</startConnectionPoint>
-  <endModule>video_vga_controller_0</endModule>
-  <endConnectionPoint>avalon_vga_sink</endConnectionPoint>
- </connection>
- <connection
-   name="vga_face_0.avalon_streaming_source/video_rgb_resampler_0.avalon_rgb_sink"
+   name="vga_face_0.avalon_streaming_source/video_vga_controller_0.avalon_vga_sink"
    kind="avalon_streaming"
    version="20.1"
    start="vga_face_0.avalon_streaming_source"
-   end="video_rgb_resampler_0.avalon_rgb_sink">
+   end="video_vga_controller_0.avalon_vga_sink">
   <parameter name="deviceFamily">
    <type>java.lang.String</type>
    <value>UNKNOWN</value>
@@ -3710,8 +3656,8 @@ parameters are a RESULT of the module parameters. -->
   </parameter>
   <startModule>vga_face_0</startModule>
   <startConnectionPoint>avalon_streaming_source</startConnectionPoint>
-  <endModule>video_rgb_resampler_0</endModule>
-  <endConnectionPoint>avalon_rgb_sink</endConnectionPoint>
+  <endModule>video_vga_controller_0</endModule>
+  <endConnectionPoint>avalon_vga_sink</endConnectionPoint>
  </connection>
  <connection
    name="clk_0.clk/video_pll_0.ref_clk"
@@ -4182,7 +4128,7 @@ parameters are a RESULT of the module parameters. -->
   <version>20.1</version>
  </plugin>
  <plugin>
-  <instanceCount>3</instanceCount>
+  <instanceCount>1</instanceCount>
   <name>avalon_streaming</name>
   <type>com.altera.entityinterfaces.IElementClass</type>
   <subtype>com.altera.entityinterfaces.IConnection</subtype>
@@ -4222,5 +4168,5 @@ parameters are a RESULT of the module parameters. -->
   <version>20.1</version>
  </plugin>
  <reportVersion>20.1 711</reportVersion>
- <uniqueIdentifier>2C335863F08400000199985C098D</uniqueIdentifier>
+ <uniqueIdentifier>2C335863F08400000199BCAE5F1B</uniqueIdentifier>
 </EnsembleReport>
