@@ -2,7 +2,7 @@ set_global_assignment -entity "vga" -library "vga" -name IP_TOOL_NAME "Qsys"
 set_global_assignment -entity "vga" -library "vga" -name IP_TOOL_VERSION "20.1"
 set_global_assignment -entity "vga" -library "vga" -name IP_TOOL_ENV "Qsys"
 set_global_assignment -library "vga" -name SOPCINFO_FILE [file join $::quartus(qip_path) "../../vga.sopcinfo"]
-set_global_assignment -entity "vga" -library "vga" -name SLD_INFO "QSYS_NAME vga HAS_SOPCINFO 1 GENERATION_ID 1759874487"
+set_global_assignment -entity "vga" -library "vga" -name SLD_INFO "QSYS_NAME vga HAS_SOPCINFO 1 GENERATION_ID 1759882599"
 set_global_assignment -library "vga" -name MISC_FILE [file join $::quartus(qip_path) "../vga.cmp"]
 set_global_assignment -library "vga" -name SLD_FILE [file join $::quartus(qip_path) "vga.debuginfo"]
 set_global_assignment -entity "vga" -library "vga" -name IP_TARGETED_DEVICE_FAMILY "Cyclone V"
@@ -15,7 +15,7 @@ set_global_assignment -entity "vga" -library "vga" -name IP_COMPONENT_DISPLAY_NA
 set_global_assignment -entity "vga" -library "vga" -name IP_COMPONENT_REPORT_HIERARCHY "On"
 set_global_assignment -entity "vga" -library "vga" -name IP_COMPONENT_INTERNAL "Off"
 set_global_assignment -entity "vga" -library "vga" -name IP_COMPONENT_VERSION "MS4w"
-set_global_assignment -entity "vga" -library "vga" -name IP_COMPONENT_PARAMETER "QVVUT19HRU5FUkFUSU9OX0lE::MTc1OTg3NDQ4Nw==::QXV0byBHRU5FUkFUSU9OX0lE"
+set_global_assignment -entity "vga" -library "vga" -name IP_COMPONENT_PARAMETER "QVVUT19HRU5FUkFUSU9OX0lE::MTc1OTg4MjU5OQ==::QXV0byBHRU5FUkFUSU9OX0lE"
 set_global_assignment -entity "vga" -library "vga" -name IP_COMPONENT_PARAMETER "QVVUT19ERVZJQ0VfRkFNSUxZ::Q3ljbG9uZSBW::QXV0byBERVZJQ0VfRkFNSUxZ"
 set_global_assignment -entity "vga" -library "vga" -name IP_COMPONENT_PARAMETER "QVVUT19ERVZJQ0U=::NUNTRU1BNUYzMUM2::QXV0byBERVZJQ0U="
 set_global_assignment -entity "vga" -library "vga" -name IP_COMPONENT_PARAMETER "QVVUT19ERVZJQ0VfU1BFRURHUkFERQ==::Ng==::QXV0byBERVZJQ0VfU1BFRURHUkFERQ=="

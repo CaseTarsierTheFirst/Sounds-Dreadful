@@ -1,5 +1,5 @@
 Info: Starting: Create block symbol file (.bsf)
-Info: qsys-generate "C:\Documents (Local only)\Intel NUC\Documents\USYD\MTRX3700\Sounds-Dreadful\Video_modules\VGA_Face_DE1_V2\vga.qsys" --block-symbol-file --output-directory="C:\Documents (Local only)\Intel NUC\Documents\USYD\MTRX3700\Sounds-Dreadful\Video_modules\VGA_Face_DE1_V2\vga" --family="Cyclone V" --part=5CSEMA5F31C6
+Info: qsys-generate C:\Users\roryl\tron3a2\Sounds-Dreadful\Video_modules\VGA_Face_DE1_V2\vga.qsys --block-symbol-file --output-directory=C:\Users\roryl\tron3a2\Sounds-Dreadful\Video_modules\VGA_Face_DE1_V2\vga --family="Cyclone V" --part=5CSEMA5F31C6
 Progress: Loading VGA_Face_DE1_V2/vga.qsys
 Progress: Reading input file
 Progress: Adding clk_0 [clock_source 20.1]
@@ -31,7 +31,7 @@ Info: qsys-generate succeeded.
 Info: Finished: Create block symbol file (.bsf)
 Info: 
 Info: Starting: Create HDL design files for synthesis
-Info: qsys-generate "C:\Documents (Local only)\Intel NUC\Documents\USYD\MTRX3700\Sounds-Dreadful\Video_modules\VGA_Face_DE1_V2\vga.qsys" --synthesis=VERILOG --output-directory="C:\Documents (Local only)\Intel NUC\Documents\USYD\MTRX3700\Sounds-Dreadful\Video_modules\VGA_Face_DE1_V2\vga\synthesis" --family="Cyclone V" --part=5CSEMA5F31C6
+Info: qsys-generate C:\Users\roryl\tron3a2\Sounds-Dreadful\Video_modules\VGA_Face_DE1_V2\vga.qsys --synthesis=VERILOG --output-directory=C:\Users\roryl\tron3a2\Sounds-Dreadful\Video_modules\VGA_Face_DE1_V2\vga\synthesis --family="Cyclone V" --part=5CSEMA5F31C6
 Progress: Loading VGA_Face_DE1_V2/vga.qsys
 Progress: Reading input file
 Progress: Adding clk_0 [clock_source 20.1]

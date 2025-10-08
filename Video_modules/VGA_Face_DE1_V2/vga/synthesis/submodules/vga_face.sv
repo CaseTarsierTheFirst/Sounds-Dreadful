@@ -1,7 +1,7 @@
 module vga_face (
     input  logic        clk,             
     input  logic        reset,           
-    input  logic [1:0]  face_select,     // 0: wolf 1: Troll 2: P2
+    input  logic [1:0]  face_select,     // 0: wolf 1: colour 2: P2
 
     // Avalon-ST Interface:
     output logic [29:0] data,            // Data output to VGA (10 bits per RGB)
@@ -11,7 +11,7 @@ module vga_face (
     input  logic        ready            
 );
 
-    typedef enum logic [1:0] {Wolf=2'd0, P2=2'd1, Troll=2'd2} face_t;
+    typedef enum logic [1:0] {Wolf=2'd0, P2=2'd1, Colour=2'd2} face_t;
 
     localparam VGA_WIDTH  = 640;
     localparam VGA_HEIGHT = 480;
@@ -22,19 +22,19 @@ module vga_face (
 
     // Image ROMs (160x120, 4 bits per channel)
     (* ram_init_file = "wolf.mif" *)   logic [NumColourBits-1:0] wolf_face   [0: SRC_WIDTH*SRC_HEIGHT-1];
-    (* ram_init_file = "troll.mif" *) logic [NumColourBits-1:0] troll_face [0: SRC_WIDTH*SRC_HEIGHT-1];
+    (* ram_init_file = "colour.mif" *) logic [NumColourBits-1:0] colour_face [0: SRC_WIDTH*SRC_HEIGHT-1];
     (* ram_init_file = "p2.mif" *)    logic [NumColourBits-1:0] p2_face    [0: SRC_WIDTH*SRC_HEIGHT-1];
 
     `ifdef VERILATOR
     initial begin
         $readmemh("wolf.hex", wolf_face);
-        $readmemh("troll.hex", troll_face);
+        $readmemh("colour.hex", colour_face);
         $readmemh("p2.hex", p2_face);
     end
     `endif
 
     logic [18:0] pixel_index = 0, pixel_index_next;
-    logic [NumColourBits-1:0] wolf_face_q, troll_face_q, p2_face_q;
+    logic [NumColourBits-1:0] wolf_face_q, colour_face_q, p2_face_q;
     logic read_enable;
 
     assign read_enable = reset | (valid & ready);
@@ -57,7 +57,7 @@ module vga_face (
     always_ff @(posedge clk) begin
         if (read_enable) begin
             wolf_face_q  <= wolf_face[src_pixel_index];
-            troll_face_q <= troll_face[src_pixel_index];
+            colour_face_q <= colour_face[src_pixel_index];
             p2_face_q    <= p2_face[src_pixel_index];
         end
     end
@@ -70,7 +70,7 @@ module vga_face (
     always_comb begin
         case(face_sel)
             Wolf:   current_pixel = wolf_face_q;
-            Troll:  current_pixel = troll_face_q;
+            Colour:  current_pixel = colour_face_q;
             P2:     current_pixel = p2_face_q;
             default: current_pixel = 12'b0;
         endcase
@@ -87,7 +87,7 @@ module vga_face (
 
     // Filter selection: TODO: Modify to be an input parameter
     logic[1:0] filter_select;
-    initial filter_select = 4'b0001;    // 0000 - No filter, 0001 - Invert, 0010 - Lighten, 0100 - Darken, 1000 - Greyscale, 1111 - Gaussian blur
+    initial filter_select = 4'b0010;    // 0000 - No filter, 0001 - Invert, 0010 - Lighten, 0100 - Darken, 1000 - Greyscale, 1111 - Gaussian blur
 
     logic[3:0] r_filt, g_filt, b_filt;  // Filter colour channels
 
@@ -119,39 +119,39 @@ module vga_face (
                 g_filt = avg[3:0];
                 b_filt = avg[3:0];
             end
-            4'b1111: begin // 5x5 Gaussian blur
-            int sum_r = 0, sum_g = 0, sum_b = 0;
-                int weight_sum = 0;
-                int kx, ky;
-                int kernel[0:4][0:4] = '{
-                    '{1, 4, 7, 4, 1},
-                    '{4,16,26,16,4},
-                    '{7,26,41,26,7},
-                    '{4,16,26,16,4},
-                    '{1, 4, 7, 4, 1}
-                };
+            // 4'b1111: begin // 5x5 Gaussian blur
+            // int sum_r = 0, sum_g = 0, sum_b = 0;
+            //     int weight_sum = 0;
+            //     int kx, ky;
+            //     int kernel[0:4][0:4] = '{
+            //         '{1, 4, 7, 4, 1},
+            //         '{4,16,26,16,4},
+            //         '{7,26,41,26,7},
+            //         '{4,16,26,16,4},
+            //         '{1, 4, 7, 4, 1}
+            //     };
 
-                for (ky = -2; ky <= 2; ky++) begin
-                    for (kx = -2; kx <= 2; kx++) begin
-                        int xx = src_x + kx;
-                        int yy = src_y + ky;
-                        if (xx >= 0 && xx < SRC_WIDTH && yy >= 0 && yy < SRC_HEIGHT) begin
-                            logic [NumColourBits-1:0] pix = wolf_face[yy*SRC_WIDTH + xx];
-                            logic [3:0] r = pix[11:8];
-                            logic [3:0] g = pix[7:4];
-                            logic [3:0] b = pix[3:0];
-                            sum_r += r * kernel[ky+2][kx+2];
-                            sum_g += g * kernel[ky+2][kx+2];
-                            sum_b += b * kernel[ky+2][kx+2];
-                            weight_sum += kernel[ky+2][kx+2];
-                        end
-                    end
-                end
-                // Normalize and clamp to 4 bits
-                r_filt = (sum_r / weight_sum) > 15 ? 15 : (sum_r / weight_sum);
-                g_filt = (sum_g / weight_sum) > 15 ? 15 : (sum_g / weight_sum);
-                b_filt = (sum_b / weight_sum) > 15 ? 15 : (sum_b / weight_sum);
-            end
+            //     for (ky = -2; ky <= 2; ky++) begin
+            //         for (kx = -2; kx <= 2; kx++) begin
+            //             int xx = src_x + kx;
+            //             int yy = src_y + ky;
+            //             if (xx >= 0 && xx < SRC_WIDTH && yy >= 0 && yy < SRC_HEIGHT) begin
+            //                 logic [NumColourBits-1:0] pix = wolf_face[yy*SRC_WIDTH + xx];
+            //                 logic [3:0] r = pix[11:8];
+            //                 logic [3:0] g = pix[7:4];
+            //                 logic [3:0] b = pix[3:0];
+            //                 sum_r += r * kernel[ky+2][kx+2];
+            //                 sum_g += g * kernel[ky+2][kx+2];
+            //                 sum_b += b * kernel[ky+2][kx+2];
+            //                 weight_sum += kernel[ky+2][kx+2];
+            //             end
+            //         end
+            //     end
+            //     // Normalize and clamp to 4 bits
+            //     r_filt = (sum_r / weight_sum) > 15 ? 15 : (sum_r / weight_sum);
+            //     g_filt = (sum_g / weight_sum) > 15 ? 15 : (sum_g / weight_sum);
+            //     b_filt = (sum_b / weight_sum) > 15 ? 15 : (sum_b / weight_sum);
+            // end
             default: begin
             // Default: no change
                 r_filt = r4;
