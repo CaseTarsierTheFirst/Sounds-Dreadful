@@ -1,5 +1,5 @@
 Flow report for VGA
-Wed Oct 08 10:54:22 2025
+Wed Oct 08 13:50:09 2025
 Quartus Prime Version 20.1.0 Build 711 06/05/2020 SJ Lite Edition
 
 
@@ -41,15 +41,15 @@ https://fpgasoftware.intel.com/eula.
 +-------------------------------------------------------------------------------+
 ; Flow Summary                                                                  ;
 +---------------------------------+---------------------------------------------+
-; Flow Status                     ; Successful - Wed Oct 08 10:54:16 2025       ;
+; Flow Status                     ; Successful - Wed Oct 08 13:50:04 2025       ;
 ; Quartus Prime Version           ; 20.1.0 Build 711 06/05/2020 SJ Lite Edition ;
 ; Revision Name                   ; VGA                                         ;
 ; Top-level Entity Name           ; top_level                                   ;
 ; Family                          ; Cyclone V                                   ;
 ; Device                          ; 5CSEMA5F31C6                                ;
 ; Timing Models                   ; Final                                       ;
-; Logic utilization (in ALMs)     ; 314 / 32,070 ( < 1 % )                      ;
-; Total registers                 ; 118                                         ;
+; Logic utilization (in ALMs)     ; 320 / 32,070 ( < 1 % )                      ;
+; Total registers                 ; 115                                         ;
 ; Total pins                      ; 40 / 457 ( 9 % )                            ;
 ; Total virtual pins              ; 0                                           ;
 ; Total block memory bits         ; 691,200 / 4,065,280 ( 17 % )                ;
@@ -68,7 +68,7 @@ https://fpgasoftware.intel.com/eula.
 +-------------------+---------------------+
 ; Option            ; Setting             ;
 +-------------------+---------------------+
-; Start date & time ; 10/08/2025 10:52:15 ;
+; Start date & time ; 10/08/2025 13:48:13 ;
 ; Main task         ; Compilation         ;
 ; Revision Name     ; VGA                 ;
 +-------------------+---------------------+
@@ -79,7 +79,7 @@ https://fpgasoftware.intel.com/eula.
 +-------------------------------------+-------------------------------------------------------+---------------+-------------+------------+
 ; Assignment Name                     ; Value                                                 ; Default Value ; Entity Name ; Section Id ;
 +-------------------------------------+-------------------------------------------------------+---------------+-------------+------------+
-; COMPILER_SIGNATURE_ID               ; 269142154967818.175988113541092                       ; --            ; --          ; --         ;
+; COMPILER_SIGNATURE_ID               ; 269142154967818.175989169332876                       ; --            ; --          ; --         ;
 ; MAX_CORE_JUNCTION_TEMP              ; 85                                                    ; --            ; --          ; --         ;
 ; MIN_CORE_JUNCTION_TEMP              ; 0                                                     ; --            ; --          ; --         ;
 ; MISC_FILE                           ; vga/synthesis/../vga.cmp                              ; --            ; --          ; --         ;
@@ -91,7 +91,7 @@ https://fpgasoftware.intel.com/eula.
 ; POWER_PRESET_COOLING_SOLUTION       ; 23 MM HEAT SINK WITH 200 LFPM AIRFLOW                 ; --            ; --          ; --         ;
 ; PROJECT_OUTPUT_DIRECTORY            ; output_files                                          ; --            ; --          ; --         ;
 ; SLD_FILE                            ; vga/synthesis/vga.debuginfo                           ; --            ; --          ; --         ;
-; SLD_INFO                            ; QSYS_NAME vga HAS_SOPCINFO 1 GENERATION_ID 1759881093 ; --            ; vga         ; --         ;
+; SLD_INFO                            ; QSYS_NAME vga HAS_SOPCINFO 1 GENERATION_ID 1759891643 ; --            ; vga         ; --         ;
 ; SOPCINFO_FILE                       ; vga/synthesis/../../vga.sopcinfo                      ; --            ; --          ; --         ;
 ; SYNTHESIS_ONLY_QIP                  ; On                                                    ; --            ; --          ; --         ;
 ; TOP_LEVEL_ENTITY                    ; top_level                                             ; VGA           ; --          ; --         ;
@@ -103,11 +103,11 @@ https://fpgasoftware.intel.com/eula.
 +----------------------+--------------+-------------------------+---------------------+------------------------------------+
 ; Module Name          ; Elapsed Time ; Average Processors Used ; Peak Virtual Memory ; Total CPU Time (on all processors) ;
 +----------------------+--------------+-------------------------+---------------------+------------------------------------+
-; Analysis & Synthesis ; 00:00:07     ; 1.0                     ; 4923 MB             ; 00:00:16                           ;
-; Fitter               ; 00:01:46     ; 1.1                     ; 7627 MB             ; 00:12:03                           ;
-; Assembler            ; 00:00:04     ; 1.0                     ; 4877 MB             ; 00:00:05                           ;
-; Timing Analyzer      ; 00:00:05     ; 2.0                     ; 5338 MB             ; 00:00:08                           ;
-; Total                ; 00:02:02     ; --                      ; --                  ; 00:12:32                           ;
+; Analysis & Synthesis ; 00:00:07     ; 1.0                     ; 4921 MB             ; 00:00:15                           ;
+; Fitter               ; 00:01:36     ; 1.1                     ; 7600 MB             ; 00:10:30                           ;
+; Assembler            ; 00:00:05     ; 1.0                     ; 4873 MB             ; 00:00:05                           ;
+; Timing Analyzer      ; 00:00:05     ; 2.0                     ; 5337 MB             ; 00:00:08                           ;
+; Total                ; 00:01:53     ; --                      ; --                  ; 00:10:58                           ;
 +----------------------+--------------+-------------------------+---------------------+------------------------------------+
 
 

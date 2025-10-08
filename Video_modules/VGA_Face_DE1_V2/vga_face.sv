@@ -1,7 +1,7 @@
 module vga_face (
     input  logic        clk,             
     input  logic        reset,           
-    input  logic [1:0]  face_select,     // 0: wolf 1: Troll 2: P2
+    input  logic [1:0]  face_select,     // 0: wolf 1: colour 2: P2
 
     // Avalon-ST Interface:
     output logic [29:0] data,            // Data output to VGA (10 bits per RGB)
@@ -85,9 +85,98 @@ module vga_face (
     wire [3:0] g4 = current_pixel[7:4];
     wire [3:0] b4 = current_pixel[3:0];
 
-    wire [9:0] red_10   = { r4, r4, 2'b00 };   // 4 bits → 8 bits then pad 2 zeros
-    wire [9:0] green_10 = { g4, g4, 2'b00 };
-    wire [9:0] blue_10  = { b4, b4, 2'b00 };
+    // Filter selection: TODO: Modify to be an input parameter
+    logic[1:0] filter_select;
+    initial filter_select = 4'b0011;    // 0000 - No filter, 0001 - Invert, 0010 - Lighten, 0100 - Darken, 1000 - Greyscale, 1111 - Gaussian blur
+
+    logic[3:0] r_filt, g_filt, b_filt;  // Filter colour channels
+
+    // Apply selected filters
+    always_comb begin
+        case (filter_select)
+            4'b0001: begin //Colour inversion
+                r_filt = ~r4;
+                g_filt = ~g4;
+                b_filt = ~b4;
+            end
+
+            4'b0010: begin // Lighten (~38%)
+					r_filt = r4 + ((15 - r4) >> 2) + ((15 - r4) >> 3);
+					g_filt = g4 + ((15 - g4) >> 2) + ((15 - g4) >> 3);
+					b_filt = b4 + ((15 - b4) >> 2) + ((15 - b4) >> 3);
+
+					if (r_filt > 15) r_filt = 15;
+					if (g_filt > 15) g_filt = 15;
+					if (b_filt > 15) b_filt = 15;
+			  end
+
+            4'b0100: begin // Darken image (~30%)
+					 r_filt = r4 - ((r4 >> 2) + (r4 >> 3)); // ~62.5% brightness
+					 g_filt = g4 - ((g4 >> 2) + (g4 >> 3));
+					 b_filt = b4 - ((b4 >> 2) + (b4 >> 3));
+				end
+				4'b0011: begin //Sigma Filter (Red Tint)
+					r_filt = r4 + ((15 - r4) >> 2) + ((15 - r4) >> 3);
+					g_filt = g4;
+					b_filt = b4;
+
+					if (r_filt > 15) r_filt = 15;
+			  end
+
+            4'b1000: begin // Greyscale
+                logic [5:0] avg;
+                avg = (r4 + g4 + b4) / 3;
+                r_filt = avg[3:0];
+                g_filt = avg[3:0];
+                b_filt = avg[3:0];
+            end
+            // 4'b1111: begin // 5x5 Gaussian blur
+            // int sum_r = 0, sum_g = 0, sum_b = 0;
+            //     int weight_sum = 0;
+            //     int kx, ky;
+            //     int kernel[0:4][0:4] = '{
+            //         '{1, 4, 7, 4, 1},
+            //         '{4,16,26,16,4},
+            //         '{7,26,41,26,7},
+            //         '{4,16,26,16,4},
+            //         '{1, 4, 7, 4, 1}
+            //     };
+
+            //     for (ky = -2; ky <= 2; ky++) begin
+            //         for (kx = -2; kx <= 2; kx++) begin
+            //             int xx = src_x + kx;
+            //             int yy = src_y + ky;
+            //             if (xx >= 0 && xx < SRC_WIDTH && yy >= 0 && yy < SRC_HEIGHT) begin
+            //                 logic [NumColourBits-1:0] pix = wolf_face[yy*SRC_WIDTH + xx];
+            //                 logic [3:0] r = pix[11:8];
+            //                 logic [3:0] g = pix[7:4];
+            //                 logic [3:0] b = pix[3:0];
+            //                 sum_r += r * kernel[ky+2][kx+2];
+            //                 sum_g += g * kernel[ky+2][kx+2];
+            //                 sum_b += b * kernel[ky+2][kx+2];
+            //                 weight_sum += kernel[ky+2][kx+2];
+            //             end
+            //         end
+            //     end
+            //     // Normalize and clamp to 4 bits
+            //     r_filt = (sum_r / weight_sum) > 15 ? 15 : (sum_r / weight_sum);
+            //     g_filt = (sum_g / weight_sum) > 15 ? 15 : (sum_g / weight_sum);
+            //     b_filt = (sum_b / weight_sum) > 15 ? 15 : (sum_b / weight_sum);
+            // end
+            default: begin
+            // Default: no change
+                r_filt = r4;
+                g_filt = g4;
+                b_filt = b4;
+            end
+        endcase
+    end
+
+    // Convert to 10-bit for VGA output
+   wire [9:0] red_10   = {r_filt, r_filt, r_filt[3:2]};
+	wire [9:0] green_10 = {g_filt, g_filt, g_filt[3:2]};
+	wire [9:0] blue_10  = {b_filt, b_filt, b_filt[3:2]};
+
 
     assign data = {red_10, green_10, blue_10};
 

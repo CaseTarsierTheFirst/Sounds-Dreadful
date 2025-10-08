@@ -1,5 +1,5 @@
 Analysis & Synthesis report for VGA
-Wed Oct 08 10:52:23 2025
+Wed Oct 08 13:48:21 2025
 Quartus Prime Version 20.1.0 Build 711 06/05/2020 SJ Lite Edition
 
 
@@ -78,7 +78,7 @@ https://fpgasoftware.intel.com/eula.
 +-------------------------------------------------------------------------------+
 ; Analysis & Synthesis Summary                                                  ;
 +---------------------------------+---------------------------------------------+
-; Analysis & Synthesis Status     ; Successful - Wed Oct 08 10:52:23 2025       ;
+; Analysis & Synthesis Status     ; Successful - Wed Oct 08 13:48:21 2025       ;
 ; Quartus Prime Version           ; 20.1.0 Build 711 06/05/2020 SJ Lite Edition ;
 ; Revision Name                   ; VGA                                         ;
 ; Top-level Entity Name           ; top_level                                   ;
@@ -201,8 +201,7 @@ https://fpgasoftware.intel.com/eula.
 ;     Processor 2            ;   0.0%      ;
 ;     Processor 3            ;   0.0%      ;
 ;     Processor 4            ;   0.0%      ;
-;     Processor 5            ;   0.0%      ;
-;     Processors 6-14        ;   0.0%      ;
+;     Processors 5-14        ;   0.0%      ;
 +----------------------------+-------------+
 
 
@@ -255,12 +254,12 @@ https://fpgasoftware.intel.com/eula.
 +---------------------------------------------+------------------------------------------------------------------------------------------------------------------+
 ; Resource                                    ; Usage                                                                                                            ;
 +---------------------------------------------+------------------------------------------------------------------------------------------------------------------+
-; Estimate of Logic utilization (ALMs needed) ; 308                                                                                                              ;
+; Estimate of Logic utilization (ALMs needed) ; 311                                                                                                              ;
 ;                                             ;                                                                                                                  ;
-; Combinational ALUT usage for logic          ; 593                                                                                                              ;
+; Combinational ALUT usage for logic          ; 597                                                                                                              ;
 ;     -- 7 input functions                    ; 1                                                                                                                ;
-;     -- 6 input functions                    ; 14                                                                                                               ;
-;     -- 5 input functions                    ; 75                                                                                                               ;
+;     -- 6 input functions                    ; 17                                                                                                               ;
+;     -- 5 input functions                    ; 76                                                                                                               ;
 ;     -- 4 input functions                    ; 102                                                                                                              ;
 ;     -- <=3 input functions                  ; 401                                                                                                              ;
 ;                                             ;                                                                                                                  ;
@@ -277,7 +276,7 @@ https://fpgasoftware.intel.com/eula.
 ;                                             ;                                                                                                                  ;
 ; Maximum fan-out node                        ; vga:u_vga|vga_video_pll_0:video_pll_0|vga_video_pll_0_video_pll:video_pll|altera_pll:altera_pll_i|outclk_wire[1] ;
 ; Maximum fan-out                             ; 208                                                                                                              ;
-; Total fan-out                               ; 3846                                                                                                             ;
+; Total fan-out                               ; 3865                                                                                                             ;
 ; Average fan-out                             ; 4.36                                                                                                             ;
 +---------------------------------------------+------------------------------------------------------------------------------------------------------------------+
 
@@ -287,11 +286,11 @@ https://fpgasoftware.intel.com/eula.
 +-----------------------------------------------------------+---------------------+---------------------------+-------------------+------------+------+--------------+------------------------------------------------------------------------------------------------------------------------------------------+-----------------------------------+--------------+
 ; Compilation Hierarchy Node                                ; Combinational ALUTs ; Dedicated Logic Registers ; Block Memory Bits ; DSP Blocks ; Pins ; Virtual Pins ; Full Hierarchy Name                                                                                                                      ; Entity Name                       ; Library Name ;
 +-----------------------------------------------------------+---------------------+---------------------------+-------------------+------------+------+--------------+------------------------------------------------------------------------------------------------------------------------------------------+-----------------------------------+--------------+
-; |top_level                                                ; 593 (0)             ; 99 (0)                    ; 691200            ; 0          ; 40   ; 0            ; |top_level                                                                                                                               ; top_level                         ; work         ;
-;    |vga:u_vga|                                            ; 593 (0)             ; 99 (0)                    ; 691200            ; 0          ; 0    ; 0            ; |top_level|vga:u_vga                                                                                                                     ; vga                               ; vga          ;
+; |top_level                                                ; 597 (0)             ; 99 (0)                    ; 691200            ; 0          ; 40   ; 0            ; |top_level                                                                                                                               ; top_level                         ; work         ;
+;    |vga:u_vga|                                            ; 597 (0)             ; 99 (0)                    ; 691200            ; 0          ; 0    ; 0            ; |top_level|vga:u_vga                                                                                                                     ; vga                               ; vga          ;
 ;       |altera_reset_controller:rst_controller|            ; 0 (0)               ; 3 (0)                     ; 0                 ; 0          ; 0    ; 0            ; |top_level|vga:u_vga|altera_reset_controller:rst_controller                                                                              ; altera_reset_controller           ; vga          ;
 ;          |altera_reset_synchronizer:alt_rst_sync_uq1|     ; 0 (0)               ; 3 (3)                     ; 0                 ; 0          ; 0    ; 0            ; |top_level|vga:u_vga|altera_reset_controller:rst_controller|altera_reset_synchronizer:alt_rst_sync_uq1                                   ; altera_reset_synchronizer         ; vga          ;
-;       |vga_face:vga_face_0|                               ; 480 (39)            ; 25 (19)                   ; 691200            ; 0          ; 0    ; 0            ; |top_level|vga:u_vga|vga_face:vga_face_0                                                                                                 ; vga_face                          ; vga          ;
+;       |vga_face:vga_face_0|                               ; 496 (55)            ; 25 (19)                   ; 691200            ; 0          ; 0    ; 0            ; |top_level|vga:u_vga|vga_face:vga_face_0                                                                                                 ; vga_face                          ; vga          ;
 ;          |altsyncram:colour_face_rtl_0|                   ; 0 (0)               ; 2 (0)                     ; 230400            ; 0          ; 0    ; 0            ; |top_level|vga:u_vga|vga_face:vga_face_0|altsyncram:colour_face_rtl_0                                                                    ; altsyncram                        ; work         ;
 ;             |altsyncram_qib1:auto_generated|              ; 0 (0)               ; 2 (2)                     ; 230400            ; 0          ; 0    ; 0            ; |top_level|vga:u_vga|vga_face:vga_face_0|altsyncram:colour_face_rtl_0|altsyncram_qib1:auto_generated                                     ; altsyncram_qib1                   ; work         ;
 ;          |altsyncram:p2_face_rtl_0|                       ; 0 (0)               ; 2 (0)                     ; 230400            ; 0          ; 0    ; 0            ; |top_level|vga:u_vga|vga_face:vga_face_0|altsyncram:p2_face_rtl_0                                                                        ; altsyncram                        ; work         ;
@@ -309,8 +308,8 @@ https://fpgasoftware.intel.com/eula.
 ;       |vga_video_pll_0:video_pll_0|                       ; 0 (0)               ; 0 (0)                     ; 0                 ; 0          ; 0    ; 0            ; |top_level|vga:u_vga|vga_video_pll_0:video_pll_0                                                                                         ; vga_video_pll_0                   ; vga          ;
 ;          |vga_video_pll_0_video_pll:video_pll|            ; 0 (0)               ; 0 (0)                     ; 0                 ; 0          ; 0    ; 0            ; |top_level|vga:u_vga|vga_video_pll_0:video_pll_0|vga_video_pll_0_video_pll:video_pll                                                     ; vga_video_pll_0_video_pll         ; vga          ;
 ;             |altera_pll:altera_pll_i|                     ; 0 (0)               ; 0 (0)                     ; 0                 ; 0          ; 0    ; 0            ; |top_level|vga:u_vga|vga_video_pll_0:video_pll_0|vga_video_pll_0_video_pll:video_pll|altera_pll:altera_pll_i                             ; altera_pll                        ; work         ;
-;       |vga_video_vga_controller_0:video_vga_controller_0| ; 113 (1)             ; 71 (28)                   ; 0                 ; 0          ; 0    ; 0            ; |top_level|vga:u_vga|vga_video_vga_controller_0:video_vga_controller_0                                                                   ; vga_video_vga_controller_0        ; vga          ;
-;          |altera_up_avalon_video_vga_timing:VGA_Timing|   ; 112 (112)           ; 43 (43)                   ; 0                 ; 0          ; 0    ; 0            ; |top_level|vga:u_vga|vga_video_vga_controller_0:video_vga_controller_0|altera_up_avalon_video_vga_timing:VGA_Timing                      ; altera_up_avalon_video_vga_timing ; vga          ;
+;       |vga_video_vga_controller_0:video_vga_controller_0| ; 101 (1)             ; 71 (28)                   ; 0                 ; 0          ; 0    ; 0            ; |top_level|vga:u_vga|vga_video_vga_controller_0:video_vga_controller_0                                                                   ; vga_video_vga_controller_0        ; vga          ;
+;          |altera_up_avalon_video_vga_timing:VGA_Timing|   ; 100 (100)           ; 43 (43)                   ; 0                 ; 0          ; 0    ; 0            ; |top_level|vga:u_vga|vga_video_vga_controller_0:video_vga_controller_0|altera_up_avalon_video_vga_timing:VGA_Timing                      ; altera_up_avalon_video_vga_timing ; vga          ;
 +-----------------------------------------------------------+---------------------+---------------------------+-------------------+------------+------+--------------+------------------------------------------------------------------------------------------------------------------------------------------+-----------------------------------+--------------+
 Note: For table entries with two numbers listed, the numbers in parentheses indicate the number of resources of the given type used by the specific entity alone. The numbers listed outside of parentheses indicate the total resources of the given type used by the specific entity and all of its sub-entities in the hierarchy.
 
@@ -376,7 +375,7 @@ Note: For table entries with two numbers listed, the numbers in parentheses indi
 ; Statistic                                    ; Value ;
 +----------------------------------------------+-------+
 ; Total registers                              ; 99    ;
-; Number of registers using Synchronous Clear  ; 35    ;
+; Number of registers using Synchronous Clear  ; 31    ;
 ; Number of registers using Synchronous Load   ; 3     ;
 ; Number of registers using Asynchronous Clear ; 3     ;
 ; Number of registers using Asynchronous Load  ; 0     ;
@@ -390,7 +389,7 @@ Note: For table entries with two numbers listed, the numbers in parentheses indi
 +-------------------------------------------------------------------------------------------------------------------------------------+---------+
 ; Inverted Register                                                                                                                   ; Fan out ;
 +-------------------------------------------------------------------------------------------------------------------------------------+---------+
-; vga:u_vga|altera_reset_controller:rst_controller|altera_reset_synchronizer:alt_rst_sync_uq1|altera_reset_synchronizer_int_chain_out ; 37      ;
+; vga:u_vga|altera_reset_controller:rst_controller|altera_reset_synchronizer:alt_rst_sync_uq1|altera_reset_synchronizer_int_chain_out ; 41      ;
 ; vga:u_vga|altera_reset_controller:rst_controller|altera_reset_synchronizer:alt_rst_sync_uq1|altera_reset_synchronizer_int_chain[0]  ; 1       ;
 ; vga:u_vga|altera_reset_controller:rst_controller|altera_reset_synchronizer:alt_rst_sync_uq1|altera_reset_synchronizer_int_chain[1]  ; 1       ;
 ; Total number of inverted registers = 3                                                                                              ;         ;
@@ -413,12 +412,14 @@ Note: For table entries with two numbers listed, the numbers in parentheses indi
 +--------------------+-----------+---------------+----------------------+------------------------+------------+--------------------------------------------------------------------------------------------------------------------------------------+
 ; Multiplexer Inputs ; Bus Width ; Baseline Area ; Area if Restructured ; Saving if Restructured ; Registered ; Example Multiplexer Output                                                                                                           ;
 +--------------------+-----------+---------------+----------------------+------------------------+------------+--------------------------------------------------------------------------------------------------------------------------------------+
-; 3:1                ; 6 bits    ; 12 LEs        ; 12 LEs               ; 0 LEs                  ; Yes        ; |top_level|vga:u_vga|vga_video_vga_controller_0:video_vga_controller_0|altera_up_avalon_video_vga_timing:VGA_Timing|pixel_counter[9] ;
+; 3:1                ; 4 bits    ; 8 LEs         ; 8 LEs                ; 0 LEs                  ; Yes        ; |top_level|vga:u_vga|vga_video_vga_controller_0:video_vga_controller_0|altera_up_avalon_video_vga_timing:VGA_Timing|vga_red[3]       ;
+; 3:1                ; 6 bits    ; 12 LEs        ; 12 LEs               ; 0 LEs                  ; Yes        ; |top_level|vga:u_vga|vga_video_vga_controller_0:video_vga_controller_0|altera_up_avalon_video_vga_timing:VGA_Timing|pixel_counter[1] ;
 ; 3:1                ; 4 bits    ; 8 LEs         ; 8 LEs                ; 0 LEs                  ; Yes        ; |top_level|vga:u_vga|vga_video_vga_controller_0:video_vga_controller_0|altera_up_avalon_video_vga_timing:VGA_Timing|pixel_counter[8] ;
-; 4:1                ; 19 bits   ; 38 LEs        ; 0 LEs                ; 38 LEs                 ; Yes        ; |top_level|vga:u_vga|vga_face:vga_face_0|pixel_index[15]                                                                             ;
+; 4:1                ; 19 bits   ; 38 LEs        ; 0 LEs                ; 38 LEs                 ; Yes        ; |top_level|vga:u_vga|vga_face:vga_face_0|pixel_index[11]                                                                             ;
 ; 4:1                ; 3 bits    ; 6 LEs         ; 6 LEs                ; 0 LEs                  ; Yes        ; |top_level|vga:u_vga|vga_video_vga_controller_0:video_vga_controller_0|altera_up_avalon_video_vga_timing:VGA_Timing|line_counter[10] ;
-; 4:1                ; 7 bits    ; 14 LEs        ; 14 LEs               ; 0 LEs                  ; Yes        ; |top_level|vga:u_vga|vga_video_vga_controller_0:video_vga_controller_0|altera_up_avalon_video_vga_timing:VGA_Timing|line_counter[9]  ;
-; 5:1                ; 12 bits   ; 36 LEs        ; 24 LEs               ; 12 LEs                 ; Yes        ; |top_level|vga:u_vga|vga_video_vga_controller_0:video_vga_controller_0|altera_up_avalon_video_vga_timing:VGA_Timing|vga_green[2]     ;
+; 4:1                ; 7 bits    ; 14 LEs        ; 14 LEs               ; 0 LEs                  ; Yes        ; |top_level|vga:u_vga|vga_video_vga_controller_0:video_vga_controller_0|altera_up_avalon_video_vga_timing:VGA_Timing|line_counter[8]  ;
+; 5:1                ; 8 bits    ; 24 LEs        ; 16 LEs               ; 8 LEs                  ; Yes        ; |top_level|vga:u_vga|vga_video_vga_controller_0:video_vga_controller_0|altera_up_avalon_video_vga_timing:VGA_Timing|vga_blue[2]      ;
+; 3:1                ; 4 bits    ; 8 LEs         ; 8 LEs                ; 0 LEs                  ; No         ; |top_level|vga:u_vga|vga_face:vga_face_0|Selector1                                                                                   ;
 +--------------------+-----------+---------------+----------------------+------------------------+------------+--------------------------------------------------------------------------------------------------------------------------------------+
 
 
@@ -1301,10 +1302,10 @@ Note: In order to hide this table in the UI and the text report file, please set
 ;     CLR               ; 3                           ;
 ;     ENA               ; 16                          ;
 ;     ENA SCLR          ; 19                          ;
-;     SCLR              ; 16                          ;
+;     SCLR              ; 12                          ;
 ;     SLD               ; 3                           ;
-;     plain             ; 42                          ;
-; arriav_lcell_comb     ; 595                         ;
+;     plain             ; 46                          ;
+; arriav_lcell_comb     ; 599                         ;
 ;     arith             ; 247                         ;
 ;         0 data inputs ; 32                          ;
 ;         1 data inputs ; 55                          ;
@@ -1313,14 +1314,14 @@ Note: In order to hide this table in the UI and the text report file, please set
 ;         4 data inputs ; 56                          ;
 ;     extend            ; 1                           ;
 ;         7 data inputs ; 1                           ;
-;     normal            ; 315                         ;
+;     normal            ; 319                         ;
 ;         0 data inputs ; 1                           ;
 ;         1 data inputs ; 1                           ;
 ;         2 data inputs ; 145                         ;
 ;         3 data inputs ; 35                          ;
 ;         4 data inputs ; 44                          ;
-;         5 data inputs ; 75                          ;
-;         6 data inputs ; 14                          ;
+;         5 data inputs ; 76                          ;
+;         6 data inputs ; 17                          ;
 ;     shared            ; 32                          ;
 ;         0 data inputs ; 2                           ;
 ;         1 data inputs ; 22                          ;
@@ -1331,7 +1332,7 @@ Note: In order to hide this table in the UI and the text report file, please set
 ; stratixv_ram_block    ; 108                         ;
 ;                       ;                             ;
 ; Max LUT depth         ; 23.70                       ;
-; Average LUT depth     ; 13.56                       ;
+; Average LUT depth     ; 13.57                       ;
 +-----------------------+-----------------------------+
 
 
@@ -1350,7 +1351,7 @@ Note: In order to hide this table in the UI and the text report file, please set
 Info: *******************************************************************
 Info: Running Quartus Prime Analysis & Synthesis
     Info: Version 20.1.0 Build 711 06/05/2020 SJ Lite Edition
-    Info: Processing started: Wed Oct 08 10:52:15 2025
+    Info: Processing started: Wed Oct 08 13:48:13 2025
 Info: Command: quartus_map --read_settings_files=on --write_settings_files=off VGA -c VGA
 Warning (18236): Number of processors has not been specified which may cause overloading on shared machines.  Set the global assignment NUM_PARALLEL_PROCESSORS in your QSF to an appropriate value for best performance.
 Info (20030): Parallel compilation is enabled and will use 14 of the 14 processors detected
@@ -1389,7 +1390,14 @@ Warning (10858): Verilog HDL warning at vga_face.sv(26): object p2_face used but
 Warning (10230): Verilog HDL assignment warning at vga_face.sv(48): truncated value with size 32 to match size of target (10) File: C:/Users/roryl/tron3a2/Sounds-Dreadful/Video_modules/VGA_Face_DE1_V2/vga/synthesis/submodules/vga_face.sv Line: 48
 Warning (10230): Verilog HDL assignment warning at vga_face.sv(49): truncated value with size 32 to match size of target (10) File: C:/Users/roryl/tron3a2/Sounds-Dreadful/Video_modules/VGA_Face_DE1_V2/vga/synthesis/submodules/vga_face.sv Line: 49
 Warning (10230): Verilog HDL assignment warning at vga_face.sv(54): truncated value with size 32 to match size of target (18) File: C:/Users/roryl/tron3a2/Sounds-Dreadful/Video_modules/VGA_Face_DE1_V2/vga/synthesis/submodules/vga_face.sv Line: 54
-Warning (10230): Verilog HDL assignment warning at vga_face.sv(102): truncated value with size 32 to match size of target (19) File: C:/Users/roryl/tron3a2/Sounds-Dreadful/Video_modules/VGA_Face_DE1_V2/vga/synthesis/submodules/vga_face.sv Line: 102
+Warning (10230): Verilog HDL assignment warning at vga_face.sv(90): truncated value with size 4 to match size of target (2) File: C:/Users/roryl/tron3a2/Sounds-Dreadful/Video_modules/VGA_Face_DE1_V2/vga/synthesis/submodules/vga_face.sv Line: 90
+Warning (10230): Verilog HDL assignment warning at vga_face.sv(104): truncated value with size 32 to match size of target (4) File: C:/Users/roryl/tron3a2/Sounds-Dreadful/Video_modules/VGA_Face_DE1_V2/vga/synthesis/submodules/vga_face.sv Line: 104
+Warning (10230): Verilog HDL assignment warning at vga_face.sv(105): truncated value with size 32 to match size of target (4) File: C:/Users/roryl/tron3a2/Sounds-Dreadful/Video_modules/VGA_Face_DE1_V2/vga/synthesis/submodules/vga_face.sv Line: 105
+Warning (10230): Verilog HDL assignment warning at vga_face.sv(106): truncated value with size 32 to match size of target (4) File: C:/Users/roryl/tron3a2/Sounds-Dreadful/Video_modules/VGA_Face_DE1_V2/vga/synthesis/submodules/vga_face.sv Line: 106
+Warning (10199): Verilog HDL Case Statement warning at vga_face.sv(113): case item expression never matches the case expression File: C:/Users/roryl/tron3a2/Sounds-Dreadful/Video_modules/VGA_Face_DE1_V2/vga/synthesis/submodules/vga_face.sv Line: 113
+Warning (10230): Verilog HDL assignment warning at vga_face.sv(119): truncated value with size 32 to match size of target (4) File: C:/Users/roryl/tron3a2/Sounds-Dreadful/Video_modules/VGA_Face_DE1_V2/vga/synthesis/submodules/vga_face.sv Line: 119
+Warning (10199): Verilog HDL Case Statement warning at vga_face.sv(126): case item expression never matches the case expression File: C:/Users/roryl/tron3a2/Sounds-Dreadful/Video_modules/VGA_Face_DE1_V2/vga/synthesis/submodules/vga_face.sv Line: 126
+Warning (10230): Verilog HDL assignment warning at vga_face.sv(191): truncated value with size 32 to match size of target (19) File: C:/Users/roryl/tron3a2/Sounds-Dreadful/Video_modules/VGA_Face_DE1_V2/vga/synthesis/submodules/vga_face.sv Line: 191
 Info (12128): Elaborating entity "vga_video_pll_0" for hierarchy "vga:u_vga|vga_video_pll_0:video_pll_0" File: C:/Users/roryl/tron3a2/Sounds-Dreadful/Video_modules/VGA_Face_DE1_V2/vga/synthesis/vga.v Line: 45
 Info (12128): Elaborating entity "vga_video_pll_0_video_pll" for hierarchy "vga:u_vga|vga_video_pll_0:video_pll_0|vga_video_pll_0_video_pll:video_pll" File: C:/Users/roryl/tron3a2/Sounds-Dreadful/Video_modules/VGA_Face_DE1_V2/vga/synthesis/submodules/vga_video_pll_0.v Line: 25
 Info (12128): Elaborating entity "altera_pll" for hierarchy "vga:u_vga|vga_video_pll_0:video_pll_0|vga_video_pll_0_video_pll:video_pll|altera_pll:altera_pll_i" File: C:/Users/roryl/tron3a2/Sounds-Dreadful/Video_modules/VGA_Face_DE1_V2/vga/synthesis/submodules/vga_video_pll_0_video_pll.v Line: 91
@@ -1594,15 +1602,15 @@ Warning (21074): Design contains 8 input pin(s) that do not drive logic
     Warning (15610): No output dependent on input pin "SW[7]" File: C:/Users/roryl/tron3a2/Sounds-Dreadful/Video_modules/VGA_Face_DE1_V2/top_level.sv Line: 3
     Warning (15610): No output dependent on input pin "SW[8]" File: C:/Users/roryl/tron3a2/Sounds-Dreadful/Video_modules/VGA_Face_DE1_V2/top_level.sv Line: 3
     Warning (15610): No output dependent on input pin "SW[9]" File: C:/Users/roryl/tron3a2/Sounds-Dreadful/Video_modules/VGA_Face_DE1_V2/top_level.sv Line: 3
-Info (21057): Implemented 779 device resources after synthesis - the final resource count might be different
+Info (21057): Implemented 783 device resources after synthesis - the final resource count might be different
     Info (21058): Implemented 11 input pins
     Info (21059): Implemented 29 output pins
-    Info (21061): Implemented 629 logic cells
+    Info (21061): Implemented 633 logic cells
     Info (21064): Implemented 108 RAM segments
     Info (21065): Implemented 2 PLLs
-Info: Quartus Prime Analysis & Synthesis was successful. 0 errors, 31 warnings
-    Info: Peak virtual memory: 4923 megabytes
-    Info: Processing ended: Wed Oct 08 10:52:23 2025
+Info: Quartus Prime Analysis & Synthesis was successful. 0 errors, 38 warnings
+    Info: Peak virtual memory: 4921 megabytes
+    Info: Processing ended: Wed Oct 08 13:48:21 2025
     Info: Elapsed time: 00:00:08
     Info: Total CPU time (on all processors): 00:00:16
 
