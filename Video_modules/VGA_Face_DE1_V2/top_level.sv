@@ -27,4 +27,3 @@ vga u_vga (
 	);
 
 endmodule
-
