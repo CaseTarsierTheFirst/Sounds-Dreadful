@@ -222,5 +222,5 @@ autocorrelation #(.W(70), .N(32), .SAMPLE_RATE(12000), .FRAME_SIZE(1024))
 
 
 
-assign final_BPM_estimate = (7*(2*bpm_low + 1*bpm_mid + 1*bpm_high)) / (4*6);
+assign final_BPM_estimate = (2*bpm_low + 2*bpm_mid + 1*bpm_high) / 5;
 endmodule
