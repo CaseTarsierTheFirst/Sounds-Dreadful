@@ -22,8 +22,8 @@ module vga (
 	wire         vga_face_0_avalon_streaming_source_ready;         // video_vga_controller_0:ready -> vga_face_0:ready
 	wire         vga_face_0_avalon_streaming_source_startofpacket; // vga_face_0:startofpacket -> video_vga_controller_0:startofpacket
 	wire         vga_face_0_avalon_streaming_source_endofpacket;   // vga_face_0:endofpacket -> video_vga_controller_0:endofpacket
-	wire         video_pll_0_vga_clk_clk;                          // video_pll_0:vga_clk_clk -> [rst_controller:clk, vga_face_0:clk, video_rgb_resampler_0:clk, video_rgb_resampler_1:clk, video_vga_controller_0:clk]
-	wire         rst_controller_reset_out_reset;                   // rst_controller:reset_out -> [vga_face_0:reset, video_rgb_resampler_0:reset, video_rgb_resampler_1:reset, video_vga_controller_0:reset]
+	wire         video_pll_0_vga_clk_clk;                          // video_pll_0:vga_clk_clk -> [rst_controller:clk, vga_face_0:clk, video_vga_controller_0:clk]
+	wire         rst_controller_reset_out_reset;                   // rst_controller:reset_out -> [vga_face_0:reset, video_vga_controller_0:reset]
 	wire         video_pll_0_reset_source_reset;                   // video_pll_0:reset_source_reset -> rst_controller:reset_in0
 
 	vga_face vga_face_0 (
@@ -42,40 +42,6 @@ module vga (
 		.ref_reset_reset    (~reset_reset_n),                 //    ref_reset.reset
 		.vga_clk_clk        (video_pll_0_vga_clk_clk),        //      vga_clk.clk
 		.reset_source_reset (video_pll_0_reset_source_reset)  // reset_source.reset
-	);
-
-	vga_video_rgb_resampler_0 video_rgb_resampler_0 (
-		.clk                      (video_pll_0_vga_clk_clk),        //               clk.clk
-		.reset                    (rst_controller_reset_out_reset), //             reset.reset
-		.stream_in_startofpacket  (),                               //   avalon_rgb_sink.startofpacket
-		.stream_in_endofpacket    (),                               //                  .endofpacket
-		.stream_in_valid          (),                               //                  .valid
-		.stream_in_ready          (),                               //                  .ready
-		.stream_in_data           (),                               //                  .data
-		.slave_read               (),                               //  avalon_rgb_slave.read
-		.slave_readdata           (),                               //                  .readdata
-		.stream_out_ready         (),                               // avalon_rgb_source.ready
-		.stream_out_startofpacket (),                               //                  .startofpacket
-		.stream_out_endofpacket   (),                               //                  .endofpacket
-		.stream_out_valid         (),                               //                  .valid
-		.stream_out_data          ()                                //                  .data
-	);
-
-	vga_video_rgb_resampler_1 video_rgb_resampler_1 (
-		.clk                      (video_pll_0_vga_clk_clk),        //               clk.clk
-		.reset                    (rst_controller_reset_out_reset), //             reset.reset
-		.stream_in_startofpacket  (),                               //   avalon_rgb_sink.startofpacket
-		.stream_in_endofpacket    (),                               //                  .endofpacket
-		.stream_in_valid          (),                               //                  .valid
-		.stream_in_ready          (),                               //                  .ready
-		.stream_in_data           (),                               //                  .data
-		.slave_read               (),                               //  avalon_rgb_slave.read
-		.slave_readdata           (),                               //                  .readdata
-		.stream_out_ready         (),                               // avalon_rgb_source.ready
-		.stream_out_startofpacket (),                               //                  .startofpacket
-		.stream_out_endofpacket   (),                               //                  .endofpacket
-		.stream_out_valid         (),                               //                  .valid
-		.stream_out_data          ()                                //                  .data
 	);
 
 	vga_video_vga_controller_0 video_vga_controller_0 (

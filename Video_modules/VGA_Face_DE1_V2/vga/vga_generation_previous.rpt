@@ -1,5 +1,5 @@
 Info: Starting: Create block symbol file (.bsf)
-Info: qsys-generate C:\Users\roryl\tron3a2\Sounds-Dreadful\Video_modules\VGA_Face_DE1_V2\vga.qsys --block-symbol-file --output-directory=C:\Users\roryl\tron3a2\Sounds-Dreadful\Video_modules\VGA_Face_DE1_V2\vga --family="Cyclone V" --part=5CSEMA5F31C6
+Info: qsys-generate "C:\Documents (Local only)\Intel NUC\Documents\USYD\MTRX3700\Sounds-Dreadful\Video_modules\VGA_Face_DE1_V2\vga.qsys" --block-symbol-file --output-directory="C:\Documents (Local only)\Intel NUC\Documents\USYD\MTRX3700\Sounds-Dreadful\Video_modules\VGA_Face_DE1_V2\vga" --family="Cyclone V" --part=5CSEMA5F31C6
 Progress: Loading VGA_Face_DE1_V2/vga.qsys
 Progress: Reading input file
 Progress: Adding clk_0 [clock_source 20.1]
@@ -18,20 +18,12 @@ Progress: Building connections
 Progress: Parameterizing connections
 Progress: Validating
 Progress: Done reading input file
-Info: vga.video_rgb_resampler_0: RGB Resampling: 10 (bits) x 3 (planes) -> 8 (bits) x 1 (planes)
-Info: vga.video_rgb_resampler_1: RGB Resampling: 8 (bits) x 1 (planes) -> 10 (bits) x 3 (planes)
 Info: vga.video_vga_controller_0: Video Output Stream: Format: 640 x 480 with Color: 10 (bits) x 3 (planes) converted to 8 (bits) per color plane
-Warning: vga.video_rgb_resampler_0.avalon_rgb_sink: video_rgb_resampler_0.avalon_rgb_sink must be connected to an Avalon-ST source
-Warning: vga.video_rgb_resampler_0.avalon_rgb_source: video_rgb_resampler_0.avalon_rgb_source must be connected to an Avalon-ST sink
-Warning: vga.video_rgb_resampler_1.avalon_rgb_sink: video_rgb_resampler_1.avalon_rgb_sink must be connected to an Avalon-ST source
-Warning: vga.video_rgb_resampler_1.avalon_rgb_source: video_rgb_resampler_1.avalon_rgb_source must be connected to an Avalon-ST sink
-Warning: vga.video_rgb_resampler_0: video_rgb_resampler_0.avalon_rgb_slave must be connected to an Avalon-MM master
-Warning: vga.video_rgb_resampler_1: video_rgb_resampler_1.avalon_rgb_slave must be connected to an Avalon-MM master
 Info: qsys-generate succeeded.
 Info: Finished: Create block symbol file (.bsf)
 Info: 
 Info: Starting: Create HDL design files for synthesis
-Info: qsys-generate C:\Users\roryl\tron3a2\Sounds-Dreadful\Video_modules\VGA_Face_DE1_V2\vga.qsys --synthesis=VERILOG --output-directory=C:\Users\roryl\tron3a2\Sounds-Dreadful\Video_modules\VGA_Face_DE1_V2\vga\synthesis --family="Cyclone V" --part=5CSEMA5F31C6
+Info: qsys-generate "C:\Documents (Local only)\Intel NUC\Documents\USYD\MTRX3700\Sounds-Dreadful\Video_modules\VGA_Face_DE1_V2\vga.qsys" --synthesis=VERILOG --output-directory="C:\Documents (Local only)\Intel NUC\Documents\USYD\MTRX3700\Sounds-Dreadful\Video_modules\VGA_Face_DE1_V2\vga\synthesis" --family="Cyclone V" --part=5CSEMA5F31C6
 Progress: Loading VGA_Face_DE1_V2/vga.qsys
 Progress: Reading input file
 Progress: Adding clk_0 [clock_source 20.1]
@@ -50,27 +42,15 @@ Progress: Building connections
 Progress: Parameterizing connections
 Progress: Validating
 Progress: Done reading input file
-Info: vga.video_rgb_resampler_0: RGB Resampling: 10 (bits) x 3 (planes) -> 8 (bits) x 1 (planes)
-Info: vga.video_rgb_resampler_1: RGB Resampling: 8 (bits) x 1 (planes) -> 10 (bits) x 3 (planes)
 Info: vga.video_vga_controller_0: Video Output Stream: Format: 640 x 480 with Color: 10 (bits) x 3 (planes) converted to 8 (bits) per color plane
-Warning: vga.video_rgb_resampler_0.avalon_rgb_sink: video_rgb_resampler_0.avalon_rgb_sink must be connected to an Avalon-ST source
-Warning: vga.video_rgb_resampler_0.avalon_rgb_source: video_rgb_resampler_0.avalon_rgb_source must be connected to an Avalon-ST sink
-Warning: vga.video_rgb_resampler_1.avalon_rgb_sink: video_rgb_resampler_1.avalon_rgb_sink must be connected to an Avalon-ST source
-Warning: vga.video_rgb_resampler_1.avalon_rgb_source: video_rgb_resampler_1.avalon_rgb_source must be connected to an Avalon-ST sink
-Warning: vga.video_rgb_resampler_0: video_rgb_resampler_0.avalon_rgb_slave must be connected to an Avalon-MM master
-Warning: vga.video_rgb_resampler_1: video_rgb_resampler_1.avalon_rgb_slave must be connected to an Avalon-MM master
 Info: vga: Generating vga "vga" for QUARTUS_SYNTH
 Info: vga_face_0: "vga" instantiated vga_face "vga_face_0"
 Info: video_pll_0: "vga" instantiated altera_up_avalon_video_pll "video_pll_0"
-Info: video_rgb_resampler_0: Starting Generation of Video RGB Resampler
-Info: video_rgb_resampler_0: "vga" instantiated altera_up_avalon_video_rgb_resampler "video_rgb_resampler_0"
-Info: video_rgb_resampler_1: Starting Generation of Video RGB Resampler
-Info: video_rgb_resampler_1: "vga" instantiated altera_up_avalon_video_rgb_resampler "video_rgb_resampler_1"
 Info: video_vga_controller_0: Starting Generation of VGA Controller
 Info: video_vga_controller_0: "vga" instantiated altera_up_avalon_video_vga_controller "video_vga_controller_0"
 Info: rst_controller: "vga" instantiated altera_reset_controller "rst_controller"
 Info: video_pll: "video_pll_0" instantiated altera_pll "video_pll"
 Info: reset_from_locked: "video_pll_0" instantiated altera_up_avalon_reset_from_locked_signal "reset_from_locked"
-Info: vga: Done "vga" with 9 modules, 13 files
+Info: vga: Done "vga" with 7 modules, 11 files
 Info: qsys-generate succeeded.
 Info: Finished: Create HDL design files for synthesis
