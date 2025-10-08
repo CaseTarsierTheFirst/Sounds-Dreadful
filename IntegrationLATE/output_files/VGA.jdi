@@ -1,0 +1,17 @@
+<sld_project_info>
+  <project>
+    <hash md5_digest_80b="88aba2af25f0e29c1dc5"/>
+  </project>
+  <file_info>
+    <file device="EP4CE115F29C7" path="VGA.sof" usercode="0xFFFFFFFF"/>
+  </file_info>
+  <sld_infos>
+    <sld_info hpath="vga:u_vga" name="u_vga">
+      <assignment_values>
+        <assignment_value text="QSYS_NAME vga HAS_SOPCINFO 1 GENERATION_ID 1759915391"/>
+        <assignment_value text="QSYS_NAME vga HAS_SOPCINFO 1 GENERATION_ID 1759916134"/>
+      </assignment_values>
+      <parameters/>
+    </sld_info>
+  </sld_infos>
+</sld_project_info>
