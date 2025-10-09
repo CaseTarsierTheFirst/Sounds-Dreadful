@@ -91,18 +91,37 @@ module vga_face (
     // Filter selection: TODO: Modify to be an input parameter
     //logic[4:0] filter_select;
 	 
-	 logic [15:0] BPM_threshold = 15'b0;
+	 // 1) sync the 1-bit switch
+	logic switch_s1, switch_s2;
+	always_ff @(posedge clk) begin
+	  switch_s1 <= switch;
+	  switch_s2 <= switch_s1;
+	end
+	wire switch_safe = switch_s2;
+
+	// 2) latch BPM once per frame (avoid torn multi-bit reads)
+	logic [15:0] bpm_frame = 16'd0;
+	always_ff @(posedge clk) begin
+	  // latch at start of a valid frame
+	  if (startofpacket && valid) begin
+		 bpm_frame <= final_bpm_estimate;  // sampled atomically for the whole frame
+	  end
+	end
+	 
+	 logic [15:0] BPM_threshold = 16'b110;
 	 logic [3:0] filter_select;
 	 
+//	 always_comb begin
+//		if (switch) begin
+//			filter_select = 4'b0001;
+//		end
+//		else begin
+//			filter_select = 4'b0010;
+//		end
+//	 end
 	 always_comb begin
-		if (switch) begin
-			filter_select = 4'b0001;
-		end
-		else begin
-			filter_select = 4'b0010;
-		end
+		filter_select = switch_safe ? 4'b0001 : 4'b0010; //invert vs lighten
 	 end
-	 
 	 
     //initial filter_select = ;    // 0000 - No filter, 0001 - Invert, 0010 - Lighten, 0100 - Darken, 1000 - Greyscale, 1111 - Gaussian blur
 
@@ -115,7 +134,7 @@ module vga_face (
 		 r_filt = r4;
 		 g_filt = g4;
 		 b_filt = b4;
-		 if (final_bpm_estimate > BPM_threshold) begin
+		 if (bpm_frame > BPM_threshold) begin
 			  case (filter_select)
 					4'b0001: begin //Colour inversion
 						 r_filt = ~r4;
