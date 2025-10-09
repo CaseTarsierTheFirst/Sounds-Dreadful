@@ -12,7 +12,7 @@
 # or its authorized distributors. Please refer to the applicable 
 # agreement for further details.
 
-# ACDS 20.1 711 win32 2025.10.08.21:19:42
+# ACDS 20.1 711 win32 2025.10.09.12:50:30
 
 # ----------------------------------------
 # vcsmx - auto-generated simulation script
@@ -107,7 +107,7 @@
 # within the Quartus project, and generate a unified
 # script which supports all the Altera IP within the design.
 # ----------------------------------------
-# ACDS 20.1 711 win32 2025.10.08.21:19:42
+# ACDS 20.1 711 win32 2025.10.09.12:50:30
 # ----------------------------------------
 # initialize variables
 TOP_LEVEL_NAME="vga"

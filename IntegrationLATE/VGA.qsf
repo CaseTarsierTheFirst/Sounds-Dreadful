@@ -1145,4 +1145,12 @@ set_global_assignment -name VERILOG_FILE adc_pll.v
 set_global_assignment -name QIP_FILE vga/synthesis/vga.qip
 set_global_assignment -name SYSTEMVERILOG_FILE top_level.sv
 set_global_assignment -name SYSTEMVERILOG_FILE vga_face.sv
+set_global_assignment -name ROUTER_TIMING_OPTIMIZATION_LEVEL MINIMUM
+set_global_assignment -name PLACEMENT_EFFORT_MULTIPLIER 0.5
+set_global_assignment -name ROUTER_EFFORT_MULTIPLIER 1.0
+set_global_assignment -name PHYSICAL_SYNTHESIS_REGISTER_DUPLICATION ON
+set_global_assignment -name PHYSICAL_SYNTHESIS_REGISTER_RETIMING ON
+set_global_assignment -name FITTER_EFFORT "FAST FIT"
+set_global_assignment -name PHYSICAL_SYNTHESIS_EFFORT FAST
+set_global_assignment -name ALM_REGISTER_PACKING_EFFORT LOW
 set_instance_assignment -name PARTITION_HIERARCHY root_partition -to | -section_id Top

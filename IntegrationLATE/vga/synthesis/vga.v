@@ -4,17 +4,19 @@
 
 `timescale 1 ps / 1 ps
 module vga (
-		input  wire       clk_clk,                 //         clk.clk
-		input  wire [1:0] face_select_face_select, // face_select.face_select
-		input  wire       reset_reset_n,           //       reset.reset_n
-		output wire       vga_CLK,                 //         vga.CLK
-		output wire       vga_HS,                  //            .HS
-		output wire       vga_VS,                  //            .VS
-		output wire       vga_BLANK,               //            .BLANK
-		output wire       vga_SYNC,                //            .SYNC
-		output wire [7:0] vga_R,                   //            .R
-		output wire [7:0] vga_G,                   //            .G
-		output wire [7:0] vga_B                    //            .B
+		input  wire        clk_clk,                              //               clk.clk
+		input  wire [1:0]  face_select_face_select,              //       face_select.face_select
+		input  wire        reset_reset_n,                        //             reset.reset_n
+		output wire        vga_CLK,                              //               vga.CLK
+		output wire        vga_HS,                               //                  .HS
+		output wire        vga_VS,                               //                  .VS
+		output wire        vga_BLANK,                            //                  .BLANK
+		output wire        vga_SYNC,                             //                  .SYNC
+		output wire [7:0]  vga_R,                                //                  .R
+		output wire [7:0]  vga_G,                                //                  .G
+		output wire [7:0]  vga_B,                                //                  .B
+		input  wire [15:0] vga_face_0_bpm_in_final_bpm_estimate, // vga_face_0_bpm_in.final_bpm_estimate
+		input  wire        vga_face_0_bpm_in_switch              //                  .switch
 	);
 
 	wire         vga_face_0_avalon_streaming_source_valid;         // vga_face_0:valid -> video_vga_controller_0:valid
@@ -28,14 +30,16 @@ module vga (
 	wire         rst_controller_001_reset_out_reset;               // rst_controller_001:reset_out -> video_pll_0:ref_reset_reset
 
 	vga_face vga_face_0 (
-		.clk           (video_pll_0_vga_clk_clk),                          //                   clock.clk
-		.reset         (rst_controller_reset_out_reset),                   //                   reset.reset
-		.data          (vga_face_0_avalon_streaming_source_data),          // avalon_streaming_source.data
-		.endofpacket   (vga_face_0_avalon_streaming_source_endofpacket),   //                        .endofpacket
-		.ready         (vga_face_0_avalon_streaming_source_ready),         //                        .ready
-		.startofpacket (vga_face_0_avalon_streaming_source_startofpacket), //                        .startofpacket
-		.valid         (vga_face_0_avalon_streaming_source_valid),         //                        .valid
-		.face_select   (face_select_face_select)                           //             face_select.face_select
+		.clk                (video_pll_0_vga_clk_clk),                          //                   clock.clk
+		.reset              (rst_controller_reset_out_reset),                   //                   reset.reset
+		.data               (vga_face_0_avalon_streaming_source_data),          // avalon_streaming_source.data
+		.endofpacket        (vga_face_0_avalon_streaming_source_endofpacket),   //                        .endofpacket
+		.ready              (vga_face_0_avalon_streaming_source_ready),         //                        .ready
+		.startofpacket      (vga_face_0_avalon_streaming_source_startofpacket), //                        .startofpacket
+		.valid              (vga_face_0_avalon_streaming_source_valid),         //                        .valid
+		.face_select        (face_select_face_select),                          //             face_select.face_select
+		.final_bpm_estimate (vga_face_0_bpm_in_final_bpm_estimate),             //                  bpm_in.final_bpm_estimate
+		.switch             (vga_face_0_bpm_in_switch)                          //                        .switch
 	);
 
 	vga_video_pll_0 video_pll_0 (

@@ -322,8 +322,9 @@ module top_level #(
   vga u_vga (
 		.clk_clk(CLOCK_50),
 		.face_select_face_select(SW[1:0]),
-		.final_bpm_estimate(final_BPM_estimate),
-		.switch(SW[0]),
+		//.bpm_in({final_BPM_estimate, SW[0]}),
+		.vga_face_0_bpm_in_final_bpm_estimate(final_BPM_estimate),
+		.vga_face_0_bpm_in_switch(SW[5]),
 		.reset_reset_n(1'b1),
 		.vga_CLK(VGA_CLK),
 		.vga_HS(VGA_HS),

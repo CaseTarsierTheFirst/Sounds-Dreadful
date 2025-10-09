@@ -1,14 +1,14 @@
-Analysis & Synthesis Status : Failed - Wed Oct 08 21:20:22 2025
+Analysis & Synthesis Status : Successful - Thu Oct 09 12:53:30 2025
 Quartus Prime Version : 20.1.0 Build 711 06/05/2020 SJ Lite Edition
 Revision Name : VGA
 Top-level Entity Name : top_level
 Family : Cyclone IV E
-Total logic elements : N/A until Partition Merge
-    Total combinational functions : N/A until Partition Merge
-    Dedicated logic registers : N/A until Partition Merge
-Total registers : N/A until Partition Merge
-Total pins : N/A until Partition Merge
-Total virtual pins : N/A until Partition Merge
-Total memory bits : N/A until Partition Merge
-Embedded Multiplier 9-bit elements : N/A until Partition Merge
-Total PLLs : N/A until Partition Merge
+Total logic elements : 25,438
+    Total combinational functions : 21,788
+    Dedicated logic registers : 7,655
+Total registers : 7655
+Total pins : 142
+Total virtual pins : 0
+Total memory bits : 824,512
+Embedded Multiplier 9-bit elements : 234
+Total PLLs : 3

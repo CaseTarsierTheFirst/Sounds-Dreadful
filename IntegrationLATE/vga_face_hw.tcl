@@ -125,3 +125,18 @@ set_interface_property face_select SVD_ADDRESS_GROUP ""
 
 add_interface_port face_select face_select face_select Input 2
 
+
+# 
+# connection point bpm_in
+# 
+add_interface bpm_in conduit end
+set_interface_property bpm_in associatedClock clock
+set_interface_property bpm_in associatedReset ""
+set_interface_property bpm_in ENABLED true
+set_interface_property bpm_in EXPORT_OF ""
+set_interface_property bpm_in PORT_NAME_MAP ""
+set_interface_property bpm_in CMSIS_SVD_VARIABLES ""
+set_interface_property bpm_in SVD_ADDRESS_GROUP ""
+
+add_interface_port bpm_in final_bpm_estimate final_bpm_estimate Input 16
+add_interface_port bpm_in switch switch Input 1

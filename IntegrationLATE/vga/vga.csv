@@ -1,12 +1,12 @@
-# system info vga on 2025.10.08.21:19:41
+# system info vga on 2025.10.09.12:50:30
 system_info:
 name,value
 DEVICE,EP4CE115F29C7
 DEVICE_FAMILY,Cyclone IV E
-GENERATION_ID,1759918778
+GENERATION_ID,1759974627
 #
 #
-# Files generated for vga on 2025.10.08.21:19:41
+# Files generated for vga on 2025.10.09.12:50:30
 files:
 filepath,kind,attributes,module,is_top
 simulation/vga.v,VERILOG,,vga,true

@@ -3,78 +3,78 @@ Timing Analyzer Summary
 ------------------------------------------------------------
 
 Type  : Slow 1200mV 85C Model Setup 'CLOCK_50'
-Slack : -91.340
-TNS   : -15484.955
-
-Type  : Slow 1200mV 85C Model Setup 'AUD_BCLK'
-Slack : -28.666
-TNS   : -5714.153
+Slack : -95.215
+TNS   : -7663.521
 
 Type  : Slow 1200mV 85C Model Setup 'u_vga|video_pll_0|video_pll|PLL_for_DE_Series_Boards|auto_generated|pll1|clk[1]'
-Slack : 11.238
-TNS   : 0.000
+Slack : -21.638
+TNS   : -137.207
+
+Type  : Slow 1200mV 85C Model Setup 'AUD_BCLK'
+Slack : -21.127
+TNS   : -8443.506
 
 Type  : Slow 1200mV 85C Model Setup 'i2c_pll_u|altpll_component|auto_generated|pll1|clk[0]'
-Slack : 49997.222
+Slack : 49997.502
 TNS   : 0.000
 
 Type  : Slow 1200mV 85C Model Hold 'CLOCK_50'
-Slack : 0.315
+Slack : 0.342
 TNS   : 0.000
 
-Type  : Slow 1200mV 85C Model Hold 'AUD_BCLK'
-Slack : 0.400
+Type  : Slow 1200mV 85C Model Hold 'u_vga|video_pll_0|video_pll|PLL_for_DE_Series_Boards|auto_generated|pll1|clk[1]'
+Slack : 0.402
 TNS   : 0.000
 
 Type  : Slow 1200mV 85C Model Hold 'i2c_pll_u|altpll_component|auto_generated|pll1|clk[0]'
 Slack : 0.403
 TNS   : 0.000
 
-Type  : Slow 1200mV 85C Model Hold 'u_vga|video_pll_0|video_pll|PLL_for_DE_Series_Boards|auto_generated|pll1|clk[1]'
-Slack : 0.404
+Type  : Slow 1200mV 85C Model Hold 'AUD_BCLK'
+Slack : 0.418
 TNS   : 0.000
 
 Type  : Slow 1200mV 85C Model Minimum Pulse Width 'AUD_BCLK'
 Slack : -3.000
-TNS   : -2898.766
+TNS   : -3119.922
 
 Type  : Slow 1200mV 85C Model Minimum Pulse Width 'CLOCK_50'
 Slack : 9.413
 TNS   : 0.000
 
 Type  : Slow 1200mV 85C Model Minimum Pulse Width 'u_vga|video_pll_0|video_pll|PLL_for_DE_Series_Boards|auto_generated|pll1|clk[1]'
-Slack : 19.708
+Slack : 19.707
 TNS   : 0.000
 
 Type  : Slow 1200mV 85C Model Minimum Pulse Width 'i2c_pll_u|altpll_component|auto_generated|pll1|clk[0]'
-Slack : 24999.703
+Slack : 24999.700
 TNS   : 0.000
 
 Type  : Slow 1200mV 0C Model Setup 'CLOCK_50'
-Slack : -80.468
-TNS   : -13537.083
+Slack : -84.172
+TNS   : -6565.828
 
 Type  : Slow 1200mV 0C Model Setup 'AUD_BCLK'
-Slack : -25.784
-TNS   : -5155.841
+Slack : -19.003
+TNS   : -7593.119
 
 Type  : Slow 1200mV 0C Model Setup 'u_vga|video_pll_0|video_pll|PLL_for_DE_Series_Boards|auto_generated|pll1|clk[1]'
-Slack : 14.002
-TNS   : 0.000
+Slack : -17.551
+TNS   : -101.541
 
 Type  : Slow 1200mV 0C Model Setup 'i2c_pll_u|altpll_component|auto_generated|pll1|clk[0]'
-Slack : 49997.434
+Slack : 49997.738
 TNS   : 0.000
 
 Type  : Slow 1200mV 0C Model Hold 'CLOCK_50'
-Slack : 0.326
-TNS   : 0.000
-
-Type  : Slow 1200mV 0C Model Hold 'i2c_pll_u|altpll_component|auto_generated|pll1|clk[0]'
-Slack : 0.355
+Slack : 0.342
 TNS   : 0.000
 
 Type  : Slow 1200mV 0C Model Hold 'u_vga|video_pll_0|video_pll|PLL_for_DE_Series_Boards|auto_generated|pll1|clk[1]'
+Slack : 0.354
+TNS   : 0.000
+
+Type  : Slow 1200mV 0C Model Hold 'i2c_pll_u|altpll_component|auto_generated|pll1|clk[0]'
 Slack : 0.355
 TNS   : 0.000
 
@@ -84,42 +84,42 @@ TNS   : 0.000
 
 Type  : Slow 1200mV 0C Model Minimum Pulse Width 'AUD_BCLK'
 Slack : -3.000
-TNS   : -2859.066
+TNS   : -3082.828
 
 Type  : Slow 1200mV 0C Model Minimum Pulse Width 'CLOCK_50'
-Slack : 9.442
+Slack : 9.440
 TNS   : 0.000
 
 Type  : Slow 1200mV 0C Model Minimum Pulse Width 'u_vga|video_pll_0|video_pll|PLL_for_DE_Series_Boards|auto_generated|pll1|clk[1]'
-Slack : 19.709
+Slack : 19.710
 TNS   : 0.000
 
 Type  : Slow 1200mV 0C Model Minimum Pulse Width 'i2c_pll_u|altpll_component|auto_generated|pll1|clk[0]'
-Slack : 24999.704
+Slack : 24999.703
 TNS   : 0.000
 
 Type  : Fast 1200mV 0C Model Setup 'CLOCK_50'
-Slack : -33.855
-TNS   : -5145.115
+Slack : -35.680
+TNS   : -1847.187
 
 Type  : Fast 1200mV 0C Model Setup 'AUD_BCLK'
-Slack : -13.260
-TNS   : -2261.934
+Slack : -9.664
+TNS   : -3580.809
 
 Type  : Fast 1200mV 0C Model Setup 'u_vga|video_pll_0|video_pll|PLL_for_DE_Series_Boards|auto_generated|pll1|clk[1]'
-Slack : 25.933
-TNS   : 0.000
+Slack : -0.221
+TNS   : -0.221
 
 Type  : Fast 1200mV 0C Model Setup 'i2c_pll_u|altpll_component|auto_generated|pll1|clk[0]'
-Slack : 49998.628
+Slack : 49998.757
 TNS   : 0.000
 
 Type  : Fast 1200mV 0C Model Hold 'CLOCK_50'
-Slack : 0.109
+Slack : 0.134
 TNS   : 0.000
 
 Type  : Fast 1200mV 0C Model Hold 'AUD_BCLK'
-Slack : 0.159
+Slack : 0.176
 TNS   : 0.000
 
 Type  : Fast 1200mV 0C Model Hold 'i2c_pll_u|altpll_component|auto_generated|pll1|clk[0]'
@@ -132,7 +132,7 @@ TNS   : 0.000
 
 Type  : Fast 1200mV 0C Model Minimum Pulse Width 'AUD_BCLK'
 Slack : -3.000
-TNS   : -2128.609
+TNS   : -2428.037
 
 Type  : Fast 1200mV 0C Model Minimum Pulse Width 'CLOCK_50'
 Slack : 9.199
@@ -143,7 +143,7 @@ Slack : 19.751
 TNS   : 0.000
 
 Type  : Fast 1200mV 0C Model Minimum Pulse Width 'i2c_pll_u|altpll_component|auto_generated|pll1|clk[0]'
-Slack : 24999.772
+Slack : 24999.773
 TNS   : 0.000
 
 ------------------------------------------------------------

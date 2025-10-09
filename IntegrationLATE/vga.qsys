@@ -98,6 +98,11 @@
    internal="video_vga_controller_0.external_interface"
    type="conduit"
    dir="end" />
+ <interface
+   name="vga_face_0_bpm_in"
+   internal="vga_face_0.bpm_in"
+   type="conduit"
+   dir="end" />
  <module name="clk_0" kind="clock_source" version="20.1" enabled="1">
   <parameter name="clockFrequency" value="50000000" />
   <parameter name="clockFrequencyKnown" value="true" />

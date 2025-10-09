@@ -1,3 +1,3 @@
-Warning (10268): Verilog HDL information at low_pass_conv.sv(63): always construct contains both blocking and non-blocking assignments File: C:/Users/penel/OneDrive/Desktop/Rory2/low_pass_conv.sv Line: 63
-Info (10281): Verilog HDL Declaration information at i2c_master.sv(9): object "reg_addr" differs only in case from object "REG_ADDR" in the same scope File: C:/Users/penel/OneDrive/Desktop/Rory2/i2c_master.sv Line: 9
-Warning (10268): Verilog HDL information at autocorrelation.sv(207): always construct contains both blocking and non-blocking assignments File: C:/Users/penel/OneDrive/Desktop/Rory2/autocorrelation.sv Line: 207
+Warning (10268): Verilog HDL information at low_pass_conv.sv(63): always construct contains both blocking and non-blocking assignments File: C:/Users/penel/Sounds-Dreadful/IntegrationLATE/low_pass_conv.sv Line: 63
+Info (10281): Verilog HDL Declaration information at i2c_master.sv(9): object "reg_addr" differs only in case from object "REG_ADDR" in the same scope File: C:/Users/penel/Sounds-Dreadful/IntegrationLATE/i2c_master.sv Line: 9
+Warning (10268): Verilog HDL information at autocorrelation.sv(207): always construct contains both blocking and non-blocking assignments File: C:/Users/penel/Sounds-Dreadful/IntegrationLATE/autocorrelation.sv Line: 207
