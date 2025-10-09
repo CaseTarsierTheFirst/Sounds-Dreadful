@@ -4,7 +4,7 @@ JedecChain;
 	DefaultMfr(6E);
 
 	P ActionCode(Cfg)
-		Device PartName(EP4CE115F29) Path("C:/Users/penel/Sounds-Dreadful/IntegrationLATE/output_files/") File("VGA.sof") MfrSpec(OpMask(1));
+		Device PartName(EP4CE115F29) Path("C:/Documents (Local only)/Intel NUC/Documents/USYD/MTRX3700/Sounds-Dreadful/IntegrationLATE/output_files/") File("VGA.sof") MfrSpec(OpMask(1));
 
 ChainEnd;
 

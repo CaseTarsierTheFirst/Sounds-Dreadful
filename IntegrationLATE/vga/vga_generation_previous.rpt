@@ -1,5 +1,5 @@
 Info: Starting: Create simulation model
-Info: qsys-generate C:\Users\penel\Sounds-Dreadful\IntegrationLATE\vga.qsys --simulation=VERILOG --allow-mixed-language-simulation --output-directory=C:\Users\penel\Sounds-Dreadful\IntegrationLATE\vga\simulation --family="Cyclone IV E" --part=EP4CE115F29C7
+Info: qsys-generate "C:\Documents (Local only)\Intel NUC\Documents\USYD\MTRX3700\Sounds-Dreadful\IntegrationLATE\vga.qsys" --simulation=VERILOG --allow-mixed-language-simulation --output-directory="C:\Documents (Local only)\Intel NUC\Documents\USYD\MTRX3700\Sounds-Dreadful\IntegrationLATE\vga\simulation" --family="Cyclone IV E" --part=EP4CE115F29C7
 Progress: Loading IntegrationLATE/vga.qsys
 Progress: Reading input file
 Progress: Adding clk_0 [clock_source 20.1]
@@ -31,27 +31,27 @@ Info: vga: Done "vga" with 7 modules, 10 files
 Info: qsys-generate succeeded.
 Info: Finished: Create simulation model
 Info: Starting: Create Modelsim Project.
-Info: sim-script-gen --spd=C:\Users\penel\Sounds-Dreadful\IntegrationLATE\vga\vga.spd --output-directory=C:/Users/penel/Sounds-Dreadful/IntegrationLATE/vga/simulation/ --use-relative-paths=true
-Info: Doing: ip-make-simscript --spd=C:\Users\penel\Sounds-Dreadful\IntegrationLATE\vga\vga.spd --output-directory=C:/Users/penel/Sounds-Dreadful/IntegrationLATE/vga/simulation/ --use-relative-paths=true
-Info: Generating the following file(s) for MODELSIM simulator in C:/Users/penel/Sounds-Dreadful/IntegrationLATE/vga/simulation/ directory:
+Info: sim-script-gen --spd="C:\Documents (Local only)\Intel NUC\Documents\USYD\MTRX3700\Sounds-Dreadful\IntegrationLATE\vga\vga.spd" --output-directory="C:/Documents (Local only)/Intel NUC/Documents/USYD/MTRX3700/Sounds-Dreadful/IntegrationLATE/vga/simulation/" --use-relative-paths=true
+Info: Doing: ip-make-simscript --spd=C:\Documents (Local only)\Intel NUC\Documents\USYD\MTRX3700\Sounds-Dreadful\IntegrationLATE\vga\vga.spd --output-directory=C:/Documents (Local only)/Intel NUC/Documents/USYD/MTRX3700/Sounds-Dreadful/IntegrationLATE/vga/simulation/ --use-relative-paths=true
+Info: Generating the following file(s) for MODELSIM simulator in C:/Documents (Local only)/Intel NUC/Documents/USYD/MTRX3700/Sounds-Dreadful/IntegrationLATE/vga/simulation/ directory:
 Info: 	mentor/msim_setup.tcl
-Info: Generating the following file(s) for VCS simulator in C:/Users/penel/Sounds-Dreadful/IntegrationLATE/vga/simulation/ directory:
+Info: Generating the following file(s) for VCS simulator in C:/Documents (Local only)/Intel NUC/Documents/USYD/MTRX3700/Sounds-Dreadful/IntegrationLATE/vga/simulation/ directory:
 Info: 	synopsys/vcs/vcs_setup.sh
-Info: Generating the following file(s) for VCSMX simulator in C:/Users/penel/Sounds-Dreadful/IntegrationLATE/vga/simulation/ directory:
+Info: Generating the following file(s) for VCSMX simulator in C:/Documents (Local only)/Intel NUC/Documents/USYD/MTRX3700/Sounds-Dreadful/IntegrationLATE/vga/simulation/ directory:
 Info: 	synopsys/vcsmx/synopsys_sim.setup
 Info: 	synopsys/vcsmx/vcsmx_setup.sh
-Info: Generating the following file(s) for NCSIM simulator in C:/Users/penel/Sounds-Dreadful/IntegrationLATE/vga/simulation/ directory:
+Info: Generating the following file(s) for NCSIM simulator in C:/Documents (Local only)/Intel NUC/Documents/USYD/MTRX3700/Sounds-Dreadful/IntegrationLATE/vga/simulation/ directory:
 Info: 	cadence/cds.lib
 Info: 	cadence/hdl.var
 Info: 	cadence/ncsim_setup.sh
 Info: 	6 .cds.lib files in cadence/cds_libs/ directory
-Info: Generating the following file(s) for RIVIERA simulator in C:/Users/penel/Sounds-Dreadful/IntegrationLATE/vga/simulation/ directory:
+Info: Generating the following file(s) for RIVIERA simulator in C:/Documents (Local only)/Intel NUC/Documents/USYD/MTRX3700/Sounds-Dreadful/IntegrationLATE/vga/simulation/ directory:
 Info: 	aldec/rivierapro_setup.tcl
-Info: For information on how to simulate your IP, see the explanatory comments in the simulator-specific subdirectories under C:/Users/penel/Sounds-Dreadful/IntegrationLATE/vga/simulation/.
+Info: For information on how to simulate your IP, see the explanatory comments in the simulator-specific subdirectories under C:/Documents (Local only)/Intel NUC/Documents/USYD/MTRX3700/Sounds-Dreadful/IntegrationLATE/vga/simulation/.
 Info: Regenerate these scripts whenever you make any change to any Quartus-generated IP in your project.
 Info: Finished: Create Modelsim Project.
 Info: Starting: Create block symbol file (.bsf)
-Info: qsys-generate C:\Users\penel\Sounds-Dreadful\IntegrationLATE\vga.qsys --block-symbol-file --output-directory=C:\Users\penel\Sounds-Dreadful\IntegrationLATE\vga --family="Cyclone IV E" --part=EP4CE115F29C7
+Info: qsys-generate "C:\Documents (Local only)\Intel NUC\Documents\USYD\MTRX3700\Sounds-Dreadful\IntegrationLATE\vga.qsys" --block-symbol-file --output-directory="C:\Documents (Local only)\Intel NUC\Documents\USYD\MTRX3700\Sounds-Dreadful\IntegrationLATE\vga" --family="Cyclone IV E" --part=EP4CE115F29C7
 Progress: Loading IntegrationLATE/vga.qsys
 Progress: Reading input file
 Progress: Adding clk_0 [clock_source 20.1]
@@ -75,7 +75,7 @@ Info: qsys-generate succeeded.
 Info: Finished: Create block symbol file (.bsf)
 Info: 
 Info: Starting: Create HDL design files for synthesis
-Info: qsys-generate C:\Users\penel\Sounds-Dreadful\IntegrationLATE\vga.qsys --synthesis=VERILOG --output-directory=C:\Users\penel\Sounds-Dreadful\IntegrationLATE\vga\synthesis --family="Cyclone IV E" --part=EP4CE115F29C7
+Info: qsys-generate "C:\Documents (Local only)\Intel NUC\Documents\USYD\MTRX3700\Sounds-Dreadful\IntegrationLATE\vga.qsys" --synthesis=VERILOG --output-directory="C:\Documents (Local only)\Intel NUC\Documents\USYD\MTRX3700\Sounds-Dreadful\IntegrationLATE\vga\synthesis" --family="Cyclone IV E" --part=EP4CE115F29C7
 Progress: Loading IntegrationLATE/vga.qsys
 Progress: Reading input file
 Progress: Adding clk_0 [clock_source 20.1]

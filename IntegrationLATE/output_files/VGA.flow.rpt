@@ -1,5 +1,5 @@
 Flow report for VGA
-Thu Oct 09 12:55:15 2025
+Thu Oct 09 14:24:37 2025
 Quartus Prime Version 20.1.0 Build 711 06/05/2020 SJ Lite Edition
 
 
@@ -41,17 +41,17 @@ https://fpgasoftware.intel.com/eula.
 +----------------------------------------------------------------------------------+
 ; Flow Summary                                                                     ;
 +------------------------------------+---------------------------------------------+
-; Flow Status                        ; Successful - Thu Oct 09 12:54:59 2025       ;
+; Flow Status                        ; Successful - Thu Oct 09 14:24:07 2025       ;
 ; Quartus Prime Version              ; 20.1.0 Build 711 06/05/2020 SJ Lite Edition ;
 ; Revision Name                      ; VGA                                         ;
 ; Top-level Entity Name              ; top_level                                   ;
 ; Family                             ; Cyclone IV E                                ;
 ; Device                             ; EP4CE115F29C7                               ;
 ; Timing Models                      ; Final                                       ;
-; Total logic elements               ; 24,008 / 114,480 ( 21 % )                   ;
-;     Total combinational functions  ; 21,790 / 114,480 ( 19 % )                   ;
-;     Dedicated logic registers      ; 7,438 / 114,480 ( 6 % )                     ;
-; Total registers                    ; 7438                                        ;
+; Total logic elements               ; 69,520 / 114,480 ( 61 % )                   ;
+;     Total combinational functions  ; 65,918 / 114,480 ( 58 % )                   ;
+;     Dedicated logic registers      ; 17,485 / 114,480 ( 15 % )                   ;
+; Total registers                    ; 17485                                       ;
 ; Total pins                         ; 142 / 529 ( 27 % )                          ;
 ; Total virtual pins                 ; 0                                           ;
 ; Total memory bits                  ; 824,512 / 3,981,312 ( 21 % )                ;
@@ -65,7 +65,7 @@ https://fpgasoftware.intel.com/eula.
 +-------------------+---------------------+
 ; Option            ; Setting             ;
 +-------------------+---------------------+
-; Start date & time ; 10/09/2025 12:50:43 ;
+; Start date & time ; 10/09/2025 14:12:25 ;
 ; Main task         ; Compilation         ;
 ; Revision Name     ; VGA                 ;
 +-------------------+---------------------+
@@ -77,7 +77,7 @@ https://fpgasoftware.intel.com/eula.
 ; Assignment Name                         ; Value                                                 ; Default Value ; Entity Name ; Section Id ;
 +-----------------------------------------+-------------------------------------------------------+---------------+-------------+------------+
 ; ALM_REGISTER_PACKING_EFFORT             ; Low                                                   ; Medium        ; --          ; --         ;
-; COMPILER_SIGNATURE_ID                   ; 1097698964352.175997464341852                         ; --            ; --          ; --         ;
+; COMPILER_SIGNATURE_ID                   ; 48599037898884.175997954516788                        ; --            ; --          ; --         ;
 ; FITTER_EFFORT                           ; Fast Fit                                              ; Auto Fit      ; --          ; --         ;
 ; MAX_CORE_JUNCTION_TEMP                  ; 85                                                    ; --            ; --          ; --         ;
 ; MIN_CORE_JUNCTION_TEMP                  ; 0                                                     ; --            ; --          ; --         ;
@@ -96,7 +96,7 @@ https://fpgasoftware.intel.com/eula.
 ; PROJECT_OUTPUT_DIRECTORY                ; output_files                                          ; --            ; --          ; --         ;
 ; ROUTER_TIMING_OPTIMIZATION_LEVEL        ; MINIMUM                                               ; Normal        ; --          ; --         ;
 ; SLD_FILE                                ; vga/synthesis/vga.debuginfo                           ; --            ; --          ; --         ;
-; SLD_INFO                                ; QSYS_NAME vga HAS_SOPCINFO 1 GENERATION_ID 1759974634 ; --            ; vga         ; --         ;
+; SLD_INFO                                ; QSYS_NAME vga HAS_SOPCINFO 1 GENERATION_ID 1759979529 ; --            ; vga         ; --         ;
 ; SOPCINFO_FILE                           ; vga/synthesis/../../vga.sopcinfo                      ; --            ; --          ; --         ;
 ; SYNTHESIS_ONLY_QIP                      ; On                                                    ; --            ; --          ; --         ;
 ; TOP_LEVEL_ENTITY                        ; top_level                                             ; VGA           ; --          ; --         ;
@@ -108,11 +108,11 @@ https://fpgasoftware.intel.com/eula.
 +----------------------+--------------+-------------------------+---------------------+------------------------------------+
 ; Module Name          ; Elapsed Time ; Average Processors Used ; Peak Virtual Memory ; Total CPU Time (on all processors) ;
 +----------------------+--------------+-------------------------+---------------------+------------------------------------+
-; Analysis & Synthesis ; 00:02:45     ; 1.0                     ; 5199 MB             ; 00:03:08                           ;
-; Fitter               ; 00:01:19     ; 1.2                     ; 6054 MB             ; 00:02:17                           ;
-; Assembler            ; 00:00:04     ; 1.0                     ; 4785 MB             ; 00:00:04                           ;
-; Timing Analyzer      ; 00:00:14     ; 1.9                     ; 5164 MB             ; 00:00:20                           ;
-; Total                ; 00:04:22     ; --                      ; --                  ; 00:05:49                           ;
+; Analysis & Synthesis ; 00:04:02     ; 1.0                     ; 5484 MB             ; 00:04:15                           ;
+; Fitter               ; 00:07:01     ; 1.2                     ; 7235 MB             ; 00:16:29                           ;
+; Assembler            ; 00:00:05     ; 1.0                     ; 4926 MB             ; 00:00:04                           ;
+; Timing Analyzer      ; 00:00:28     ; 2.8                     ; 5684 MB             ; 00:00:48                           ;
+; Total                ; 00:11:36     ; --                      ; --                  ; 00:21:36                           ;
 +----------------------+--------------+-------------------------+---------------------+------------------------------------+
 
 
@@ -121,10 +121,10 @@ https://fpgasoftware.intel.com/eula.
 +----------------------+------------------+------------+------------+----------------+
 ; Module Name          ; Machine Hostname ; OS Name    ; OS Version ; Processor type ;
 +----------------------+------------------+------------+------------+----------------+
-; Analysis & Synthesis ; PBrown           ; Windows 10 ; 10.0       ; x86_64         ;
-; Fitter               ; PBrown           ; Windows 10 ; 10.0       ; x86_64         ;
-; Assembler            ; PBrown           ; Windows 10 ; 10.0       ; x86_64         ;
-; Timing Analyzer      ; PBrown           ; Windows 10 ; 10.0       ; x86_64         ;
+; Analysis & Synthesis ; INTEL_NUC        ; Windows 10 ; 10.0       ; x86_64         ;
+; Fitter               ; INTEL_NUC        ; Windows 10 ; 10.0       ; x86_64         ;
+; Assembler            ; INTEL_NUC        ; Windows 10 ; 10.0       ; x86_64         ;
+; Timing Analyzer      ; INTEL_NUC        ; Windows 10 ; 10.0       ; x86_64         ;
 +----------------------+------------------+------------+------------+----------------+
 
 

@@ -408,6 +408,10 @@
 					"strict" : false
 				},
 				{
+					"name" : "SW[5]",
+					"strict" : false
+				},
+				{
 					"name" : "AUD_ADCDAT",
 					"strict" : false
 				},

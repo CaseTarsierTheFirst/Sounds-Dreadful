@@ -1,0 +1,2 @@
+Warning (10268): Verilog HDL information at vga_face.sv(114): always construct contains both blocking and non-blocking assignments File: C:/Documents (Local only)/Intel NUC/Documents/USYD/MTRX3700/Sounds-Dreadful/Video_modules/VGA_Face_DE1_V2/vga/synthesis/submodules/vga_face.sv Line: 114
+Warning (10268): Verilog HDL information at vga_face.sv(114): always construct contains both blocking and non-blocking assignments File: C:/Documents (Local only)/Intel NUC/Documents/USYD/MTRX3700/Sounds-Dreadful/Video_modules/VGA_Face_DE1_V2/vga_face.sv Line: 114

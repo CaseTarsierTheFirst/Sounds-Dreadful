@@ -3,6 +3,7 @@ module vga_face (
     input  logic        reset,           
     input  logic [1:0]  face_select,     // 0: wolf 1: colour 2: P2
 	 input logic [15:0]  final_bpm_estimate,
+	 input logic [15:0] bpm_slow,
 	 input logic switch,
 
     // Avalon-ST Interface:
@@ -90,22 +91,182 @@ module vga_face (
     // Filter selection: TODO: Modify to be an input parameter
     //logic[4:0] filter_select;
 	 
-	 logic BPM_threshold = 120;
+	 // 1) sync the 1-bit switch
+	logic switch_s1, switch_s2;
+	always_ff @(posedge clk) begin
+	  switch_s1 <= switch;
+	  switch_s2 <= switch_s1;
+	end
+	wire switch_safe = switch_s2;
+
+	// 2) latch BPM once per frame (avoid torn multi-bit reads)
+	logic [15:0] bpm_frame = 16'd0;
+	always_ff @(posedge clk) begin
+	  // latch at start of a valid frame
+	  if (startofpacket && valid) begin
+		 bpm_frame <= final_bpm_estimate;  // sampled atomically for the whole frame
+	  end
+	end
+	 
+	 logic [15:0] BPM_threshold = 16'd110;
 	 logic [3:0] filter_select;
 	 
+//	 always_comb begin
+//		if (switch) begin
+//			filter_select = 4'b0001;
+//		end
+//		else begin
+//			filter_select = 4'b0010;
+//		end
+//	 end
 	 always_comb begin
-		if (switch) begin
-			filter_select = 4'b0001;
-		end
-		else begin
-			filter_select = 4'b0010;
-		end
+		filter_select = switch_safe ? 4'b0001 : 4'b0010; //invert vs lighten
 	 end
-	 
 	 
     //initial filter_select = ;    // 0000 - No filter, 0001 - Invert, 0010 - Lighten, 0100 - Darken, 1000 - Greyscale, 1111 - Gaussian blur
 
     logic[3:0] r_filt, g_filt, b_filt;  // Filter colour channels
+
+    // Line buffers for Gaussian Blur
+    (* ramstyle="M9K" *) logic [11:0] linebuf0 [0:SRC_WIDTH-1];
+    (* ramstyle="M9K" *) logic [11:0] linebuf1 [0:SRC_WIDTH-1];
+    (* ramstyle="M9K" *) logic [11:0] linebuf2 [0:SRC_WIDTH-1];
+    (* ramstyle="M9K" *) logic [11:0] linebuf3 [0:SRC_WIDTH-1];
+    (* ramstyle="M9K" *) logic [11:0] linebuf4 [0:SRC_WIDTH-1];
+
+    // Line buffer write pointer
+    logic [9:0] src_x_reg; // Registered src_x to sync line buffer write
+    always_ff @(posedge clk) begin
+        if (reset)
+            src_x_reg <= 0;
+        else if (read_enable)
+            src_x_reg <= src_x;
+    end
+
+    
+    //Line buffer update on read_enable
+    integer i;
+    always_ff @(posedge clk) begin
+        if (reset) begin
+            for (i = 0; i < SRC_WIDTH; i++) begin
+                linebuf0[i] <= 12'd0;
+                linebuf1[i] <= 12'd0;
+                linebuf2[i] <= 12'd0;
+                linebuf3[i] <= 12'd0;
+                linebuf4[i] <= 12'd0;
+            end
+        end else if (read_enable) begin
+            // Shift lines upward, new pixel goes into linebuf4 at src_x position
+            // This simulates a FIFO of 5 lines for 5x5 window
+            // Shift line buffers up
+            for (i = 0; i < SRC_WIDTH; i++) begin
+                linebuf0[i] <= linebuf1[i];
+                linebuf1[i] <= linebuf2[i];
+                linebuf2[i] <= linebuf3[i];
+                linebuf3[i] <= linebuf4[i];
+            end
+            // Insert new pixel to linebuf4 at src_x position
+            linebuf4[src_x_reg] <= current_pixel;
+        end
+    end
+
+    // Gaussian blur task
+    task automatic gaussian_blur_5x5(
+        input logic [11:0] linebuf0_in [0:SRC_WIDTH-1],
+        input logic [11:0] linebuf1_in [0:SRC_WIDTH-1],
+        input logic [11:0] linebuf2_in [0:SRC_WIDTH-1],
+        input logic [11:0] linebuf3_in [0:SRC_WIDTH-1],
+        input logic [11:0] linebuf4_in [0:SRC_WIDTH-1],
+        input logic [9:0] x_pos,
+        output logic [3:0] r_out,
+        output logic [3:0] g_out,
+        output logic [3:0] b_out
+    );
+        // Gaussian kernel
+        int kernel [0:4][0:4] = '{'{1, 4, 7, 4, 1},
+                                  '{4,16,26,16,4},
+                                  '{7,26,41,26,7},
+                                  '{4,16,26,16,4},
+                                  '{1, 4, 7, 4, 1}};
+
+        int r_sum, g_sum, b_sum;
+        int xx, yy;
+        int weight_sum = 273;
+        logic [11:0] pix;
+        logic [3:0] r;
+        logic [3:0] g;
+        logic [3:0] b;
+        int tmp_r;
+        int tmp_g;
+        int tmp_b;
+
+        r_sum = 0;
+        g_sum = 0;
+        b_sum = 0;
+
+
+        for (yy = 0; yy < 5; yy++) begin
+            for (xx = 0; xx < 5; xx++) begin
+                int pos_x = x_pos + xx - 2; // center at x_pos
+                int pos_y = yy; // line buffer index (0-4)
+
+                // Boundary check (clamp edges)
+                if (pos_x < 0) pos_x = 0;
+                else if (pos_x >= SRC_WIDTH) pos_x = SRC_WIDTH - 1;
+
+                // Select pixel from corresponding line buffer
+                
+                case (pos_y)
+                    0: pix = linebuf0_in[pos_x];
+                    1: pix = linebuf1_in[pos_x];
+                    2: pix = linebuf2_in[pos_x];
+                    3: pix = linebuf3_in[pos_x];
+                    4: pix = linebuf4_in[pos_x];
+                    default: pix = 12'd0;
+                endcase
+
+                // Extract channels
+                r = pix[11:8];
+                g = pix[7:4];
+                b = pix[3:0];
+
+                r_sum += kernel[yy][xx] * r;
+                g_sum += kernel[yy][xx] * g;
+                b_sum += kernel[yy][xx] * b;
+            end
+        end
+
+        // // Divide by weight_sum (273)
+        // r_out = (r_sum + (weight_sum/2)) / weight_sum; // rounding
+        // g_out = (g_sum + (weight_sum/2)) / weight_sum;
+        // b_out = (b_sum + (weight_sum/2)) / weight_sum;
+
+        // // Clamp outputs (should fit in 4 bits)
+        // if (r_out > 15) r_out = 15;
+        // if (g_out > 15) g_out = 15;
+        // if (b_out > 15) b_out = 15;
+                // Divide by weight_sum (273) -- compute into wide ints, then clamp, then assign
+
+
+        tmp_r = (r_sum + (weight_sum/2)) / weight_sum; // Integer division
+        tmp_g = (g_sum + (weight_sum/2)) / weight_sum;
+        tmp_b = (b_sum + (weight_sum/2)) / weight_sum;
+
+        // Clamp in wide integers
+        if (tmp_r < 0) tmp_r = 0;
+        if (tmp_g < 0) tmp_g = 0;
+        if (tmp_b < 0) tmp_b = 0;
+
+        if (tmp_r > 15) tmp_r = 15; // Clamp all outputs
+        if (tmp_g > 15) tmp_g = 15;
+        if (tmp_b > 15) tmp_b = 15;
+
+        // Assign clamped outputs
+        r_out = tmp_r[3:0];
+        g_out = tmp_g[3:0];
+        b_out = tmp_b[3:0];
+
+    endtask
 
     // Apply selected filters
     always_comb begin
@@ -114,7 +275,7 @@ module vga_face (
 		 r_filt = r4;
 		 g_filt = g4;
 		 b_filt = b4;
-		 if (final_bpm_estimate > BPM_threshold) begin
+		 if (bpm_frame > BPM_threshold) begin
 			  case (filter_select)
 					4'b0001: begin //Colour inversion
 						 r_filt = ~r4;
@@ -122,7 +283,7 @@ module vga_face (
 						 b_filt = ~b4;
 					end
 
-					4'b0010: begin // Lighten (~38%)
+					4'b1111: begin // Lighten (~38%)
 						r_filt = r4 + ((15 - r4) >> 2) + ((15 - r4) >> 3);
 						g_filt = g4 + ((15 - g4) >> 2) + ((15 - g4) >> 3);
 						b_filt = b4 + ((15 - b4) >> 2) + ((15 - b4) >> 3);
@@ -130,7 +291,7 @@ module vga_face (
 						if (r_filt > 15) r_filt = 15;
 						if (g_filt > 15) g_filt = 15;
 						if (b_filt > 15) b_filt = 15;
-				  end
+					end
 
 					4'b0100: begin // Darken image (~30%)
 						 r_filt = r4 - ((r4 >> 2) + (r4 >> 3)); // ~62.5% brightness
@@ -143,7 +304,7 @@ module vga_face (
 						b_filt = b4;
 
 						if (r_filt > 15) r_filt = 15;
-				  end
+				  	end
 
 					4'b1000: begin // Greyscale
 						 logic [5:0] avg;
@@ -152,39 +313,9 @@ module vga_face (
 						 g_filt = avg[3:0];
 						 b_filt = avg[3:0];
 					end
-					// 4'b1111: begin // 5x5 Gaussian blur
-					// int sum_r = 0, sum_g = 0, sum_b = 0;
-					//     int weight_sum = 0;
-					//     int kx, ky;
-					//     int kernel[0:4][0:4] = '{
-					//         '{1, 4, 7, 4, 1},
-					//         '{4,16,26,16,4},
-					//         '{7,26,41,26,7},
-					//         '{4,16,26,16,4},
-					//         '{1, 4, 7, 4, 1}
-					//     };
-
-					//     for (ky = -2; ky <= 2; ky++) begin
-					//         for (kx = -2; kx <= 2; kx++) begin
-					//             int xx = src_x + kx;
-					//             int yy = src_y + ky;
-					//             if (xx >= 0 && xx < SRC_WIDTH && yy >= 0 && yy < SRC_HEIGHT) begin
-					//                 logic [NumColourBits-1:0] pix = wolf_face[yy*SRC_WIDTH + xx];
-					//                 logic [3:0] r = pix[11:8];
-					//                 logic [3:0] g = pix[7:4];
-					//                 logic [3:0] b = pix[3:0];
-					//                 sum_r += r * kernel[ky+2][kx+2];
-					//                 sum_g += g * kernel[ky+2][kx+2];
-					//                 sum_b += b * kernel[ky+2][kx+2];
-					//                 weight_sum += kernel[ky+2][kx+2];
-					//             end
-					//         end
-					//     end
-					//     // Normalize and clamp to 4 bits
-					//     r_filt = (sum_r / weight_sum) > 15 ? 15 : (sum_r / weight_sum);
-					//     g_filt = (sum_g / weight_sum) > 15 ? 15 : (sum_g / weight_sum);
-					//     b_filt = (sum_b / weight_sum) > 15 ? 15 : (sum_b / weight_sum);
-					// end
+					4'b0010: begin // 5x5 Gaussian blur
+						gaussian_blur_5x5(linebuf0, linebuf1, linebuf2, linebuf3, linebuf4, src_x_reg, r_filt, g_filt, b_filt);
+					end
 					default: begin
 					// Default: no change
 						 r_filt = r4;

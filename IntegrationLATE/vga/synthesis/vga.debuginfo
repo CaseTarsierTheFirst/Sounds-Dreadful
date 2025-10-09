@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <EnsembleReport name="vga" kind="system" version="20.1" fabric="QSYS">
  <!-- Format version 20.1 711 (Future versions may contain additional information.) -->
- <!-- 2025.10.09.12:50:36 -->
+ <!-- 2025.10.09.14:12:11 -->
  <!-- A collection of modules and connections -->
  <parameter name="clockCrossingAdapter">
   <type>com.altera.sopcmodel.ensemble.EClockAdapter</type>
@@ -53,7 +53,7 @@
  </parameter>
  <parameter name="generationId">
   <type>int</type>
-  <value>1759974634</value>
+  <value>1759979529</value>
   <derived>false</derived>
   <enabled>true</enabled>
   <visible>true</visible>
@@ -2802,5 +2802,5 @@ parameters are a RESULT of the module parameters. -->
   <version>20.1</version>
  </plugin>
  <reportVersion>20.1 711</reportVersion>
- <uniqueIdentifier>78AF0814F4FC00000199C6A9B719</uniqueIdentifier>
+ <uniqueIdentifier>2C335863F08400000199C6F4684A</uniqueIdentifier>
 </EnsembleReport>
