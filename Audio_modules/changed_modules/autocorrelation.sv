@@ -412,3 +412,47 @@ module autcorrelation #(
     end
   end
 endmodule
+
+// Modified start_req logic: bypass valid_count threshold
+  logic start_req;
+  always_ff @(posedge clk or posedge reset) begin
+    if (reset) begin
+      start_req <= 1'b0;
+    end else begin
+      if (flux_valid && beat_valid) begin
+        start_req <= 1'b1;
+      end
+      if (state == IDLE && start_req) begin
+        start_req <= 1'b0;
+      end
+    end
+  end
+
+  // FSM and other logic as before, but inject debug prints
+  always_ff @(posedge clk or posedge reset) begin
+    if (reset) begin
+      state <= IDLE;
+      bpm_valid <= 1'b0;
+      BPM_estimate <= 16'd0;
+      // init others…
+    end else begin
+      unique case (state)
+        IDLE: begin
+          if (start_req) begin
+            $display("Sim: Leaving IDLE at time %0t", $time);
+            lag_index <= (LOWER_LAG_FR>0)? LOWER_LAG_FR[LW-1:0] :'0;
+            j_index <= '0;
+            j_limit <= pairs_for(valid_count, (LOWER_LAG_FR>0)? LOWER_LAG_FR[LW-1:0] :'0);
+            autocorr_accum <= '0;
+            best_score <= '0;
+            best_lag <= (LOWER_LAG_FR>0)? LOWER_LAG_FR[LW-1:0] :'0;
+            state <= ACC_ADDR;
+          end
+        end
+        // rest same...
+      endcase
+    end
+  end
+
+  assign state_out = state[1:0];
+endmodule
