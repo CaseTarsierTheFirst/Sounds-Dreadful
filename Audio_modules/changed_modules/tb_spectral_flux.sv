@@ -1,7 +1,7 @@
 `timescale 1ns/1ns
+
 module tb_spectral_flux;
 
-    // smaller params for simulation
     localparam W = 16;
     localparam N = 8;
     localparam MAX_FLUX_LENGTH = 32;
@@ -15,7 +15,6 @@ module tb_spectral_flux;
     logic [MAX_FLUX_LENGTH-1:0] flux_low, flux_mid, flux_high;
     logic flux_valid, beat_valid, frame_done;
 
-    // DUT instantiation
     spectral_flux #(
         .W(W), .N(N), .MAX_FLUX_LENGTH(MAX_FLUX_LENGTH)
     ) dut (
@@ -29,29 +28,26 @@ module tb_spectral_flux;
         .frame_done(frame_done),
         .flux_low(flux_low),
         .flux_mid(flux_mid),
-        .flux_high(flux_high)
+        .flux_high(flux_high),
+        .flux_accum() // optional, for debug
     );
 
-    // clock gen
+    // Clock generation
     initial clk = 0;
     always #(CLK_PERIOD/2) clk = ~clk;
 
-    // task for sending one frame
     task send_frame(input [W-1:0] base, input [W-1:0] step);
-        automatic int i;
-        for (i = 0; i < N; i++) begin
+        for (int i = 0; i < N; i++) begin
             @(posedge clk);
-            mag_valid <= 1'b1;
-            mag_sq <= base + i * step;
+            mag_valid <= 1;
+            mag_sq <= base + step * i;
         end
         @(posedge clk);
-        mag_valid <= 1'b0;
+        mag_valid <= 0;
     endtask
 
-    // alternating band magnitudes
     task band_frame();
-        automatic int i;
-        for (i = 0; i < N; i++) begin
+        for (int i = 0; i < N; i++) begin
             @(posedge clk);
             mag_valid <= 1;
             case (i % 3)
@@ -64,38 +60,18 @@ module tb_spectral_flux;
         mag_valid <= 0;
     endtask
 
-    // simulation sequence
     initial begin
-	 
-		  clk = 0;
-		  reset = 1;
-		  mag_valid = 0;
-		  mag_sq = 0;
-		  dut.flux_value = 0;
-		  dut.flux_low = 0;
-		  dut.flux_mid = 0;
-		  dut.flux_high = 0;
-		  dut.frame_done = 0;
-		  dut.flux_valid = 0;
-		  
-        $display("Starting clean spectral_flux simulation...");
-        reset = 1; mag_valid = 0; mag_sq = 0;
-        #(5*CLK_PERIOD);
+        // Init
+        reset = 1;
+        mag_valid = 0;
+        mag_sq = 0;
+        #(5 * CLK_PERIOD);
         reset = 0;
 
-        $display("Frame 1: Flat 200");
+        $display("=== Frame 1: Flat 200 ===");
         send_frame(200, 0);
-        #(20);
+        #(5 * CLK_PERIOD);
 
-        $display("Frame 2: Ramp");
+        $display("=== Frame 2: Ramp 100 +20 ===");
         send_frame(100, 20);
-        #(20);
-
-        $display("Frame 3: Bands");
-        band_frame();
-        #(20);
-
-        $display("Done. Check waveforms.");
-        $stop;
-    end
-endmodule
+        #(
