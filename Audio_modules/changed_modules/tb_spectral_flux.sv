@@ -14,6 +14,7 @@ module tb_spectral_flux;
     logic [MAX_FLUX_LENGTH-1:0] flux_value;
     logic [MAX_FLUX_LENGTH-1:0] flux_low, flux_mid, flux_high;
     logic flux_valid, beat_valid, frame_done;
+    logic [MAX_FLUX_LENGTH-1:0] flux_accum;
 
     spectral_flux #(
         .W(W), .N(N), .MAX_FLUX_LENGTH(MAX_FLUX_LENGTH)
@@ -29,35 +30,37 @@ module tb_spectral_flux;
         .flux_low(flux_low),
         .flux_mid(flux_mid),
         .flux_high(flux_high),
-        .flux_accum() // optional, for debug
+        .flux_accum(flux_accum)
     );
 
     // Clock generation
     initial clk = 0;
     always #(CLK_PERIOD/2) clk = ~clk;
 
-    task send_frame(input [W-1:0] base, input [W-1:0] step);
-        for (int i = 0; i < N; i++) begin
+    // Send N samples with constant magnitude (should produce 0 accumulation)
+    task send_constant_frame(input [W-1:0] value);
+        begin
+            for (int i = 0; i < N; i++) begin
+                @(posedge clk);
+                mag_valid <= 1;
+                mag_sq <= value;
+            end
             @(posedge clk);
-            mag_valid <= 1;
-            mag_sq <= base + step * i;
+            mag_valid <= 0;
         end
-        @(posedge clk);
-        mag_valid <= 0;
     endtask
 
-    task band_frame();
-        for (int i = 0; i < N; i++) begin
+    // Send N samples with increasing magnitude (should produce accumulation)
+    task send_ramp_frame(input [W-1:0] start, input [W-1:0] step);
+        begin
+            for (int i = 0; i < N; i++) begin
+                @(posedge clk);
+                mag_valid <= 1;
+                mag_sq <= start + i * step;
+            end
             @(posedge clk);
-            mag_valid <= 1;
-            case (i % 3)
-                0: mag_sq <= 16'd100;
-                1: mag_sq <= 16'd700;
-                2: mag_sq <= 16'd1400;
-            endcase
+            mag_valid <= 0;
         end
-        @(posedge clk);
-        mag_valid <= 0;
     endtask
 
     initial begin
@@ -68,10 +71,27 @@ module tb_spectral_flux;
         #(5 * CLK_PERIOD);
         reset = 0;
 
-        $display("=== Frame 1: Flat 200 ===");
-        send_frame(200, 0);
+        // Frame 1: Constant -> should output 0 flux
+        $display("=== Frame 1: Constant (no change) ===");
+        send_constant_frame(16'd500);
         #(5 * CLK_PERIOD);
 
-        $display("=== Frame 2: Ramp 100 +20 ===");
-        send_frame(100, 20);
-        #(
+        // Frame 2: Increasing values
+        $display("=== Frame 2: Ramp (positive diff) ===");
+        send_ramp_frame(16'd100, 16'd50);
+        #(5 * CLK_PERIOD);
+
+        // Frame 3: Mixed bands
+        $display("=== Frame 3: Band spread ===");
+        for (int i = 0; i < N; i++) begin
+            @(posedge clk);
+            mag_valid <= 1;
+            case (i % 3)
+                0: mag_sq <= 16'd100;   // low
+                1: mag_sq <= 16'd700;   // mid
+                2: mag_sq <= 16'd1500;  // high
+            endcase
+        end
+        @(posedge clk);
+        mag_valid <= 0;
+        #(5
